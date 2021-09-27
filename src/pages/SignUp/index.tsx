@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Login = () => {
+const SignUp = () => {
   return (
     <>
       <div>
@@ -13,17 +13,18 @@ const Login = () => {
       </div>
       <div>
         <h1>Pergunta Aí</h1>
-        <h2>Faça seu login</h2>
+        <h2>Faça seu cadastro</h2>
         <form>
+          <input type="text" placeholder="Nome e sobrenome" />
+          <input type="text" placeholder="Digite seu curso" />
           <input type="text" placeholder="Digite seu e-mail" />
           <input type="password" placeholder="Digite uma senha" />
-          <button type="submit">Entrar</button>
+          <button type="submit">Cadastrar</button>
         </form>
-        <a href="#">Esqueci minha senha</a>
-        <a href="/signup">Criar conta</a>
+        <a href="/login"> Voltar para login</a>
       </div>
     </>
   );
 };
 
-export default Login;
+export default SignUp;
