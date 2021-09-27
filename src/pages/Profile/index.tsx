@@ -1,13 +1,19 @@
 import React from 'react';
 
+import avatar from '../../assets/avatar1.png';
+
+import { Header } from './styles';
+
 const Profile = () => {
   return (
     <>
-      <figure>
-        <img src="" alt="" />
-        <figcaption>Avatar</figcaption>
-        <button type="button">Editar avatar</button>
-      </figure>
+      <Header>
+        <figure>
+          <img src={avatar} alt="avatar" />
+          <figcaption>Avatar</figcaption>
+          <button type="button">Editar avatar</button>
+        </figure>
+      </Header>
       <h1>Meu perfil</h1>
       <button type="button">Editar</button>
       <form>
