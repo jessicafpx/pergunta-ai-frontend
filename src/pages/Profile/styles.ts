@@ -11,3 +11,10 @@ export const Header = styled.header`
     margin-top: 50px;
   }
 `;
+
+export const Content = styled.main`
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  margin: 122px auto;
+`;
