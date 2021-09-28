@@ -1,18 +1,20 @@
 import React from 'react';
 
+import {Wrapper, BackgroundWrapper, FormWrapper} from './styles';
+import backgroundImg from '../../assets/backgroundImg.png';
+import logoMiniImg from '../../assets/logo-mini.png';
+import logoImg from '../../assets/logo.png';
+
 const SignUp = () => {
   return (
-    <>
-      <div>
-        <h3>Pergunta Aí</h3>
-        <figure>
-          <img src="" alt=""/>
-          <figcaption>Imagem de pessoas com balões de conversa</figcaption>
-        </figure>
+    <Wrapper>
+      <BackgroundWrapper>
+        <img src={logoMiniImg}></img>
+        <img src={backgroundImg} alt=""/>
         <h3>Aprenda e compartilhe conhecimento</h3>
-      </div>
-      <div>
-        <h1>Pergunta Aí</h1>
+      </BackgroundWrapper>
+      <FormWrapper>
+        <img src={logoImg}></img>
         <h2>Faça seu cadastro</h2>
         <form>
           <input type="text" placeholder="Nome e sobrenome" />
@@ -22,8 +24,8 @@ const SignUp = () => {
           <button type="submit">Cadastrar</button>
         </form>
         <a href="/login"> Voltar para login</a>
-      </div>
-    </>
+      </FormWrapper>
+    </Wrapper>
   );
 };
 
