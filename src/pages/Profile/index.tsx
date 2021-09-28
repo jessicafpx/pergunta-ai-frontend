@@ -1,23 +1,44 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
+
+import { FiCamera, FiArrowLeft, FiEdit, FiTrash } from 'react-icons/fi';
 
 import avatar from '../../assets/avatar1.png';
 import Button from '../../components/Button';
 
-import { Header, Content } from './styles';
+import { Header, Content, Title, Form } from './styles';
 
 const Profile = () => {
+
+  const handleAvatarChange = () => {
+
+  }
+
   return (
     <>
       <Header>
-        <figure>
-          <img src={avatar} alt="avatar" />
-          <button type="button">Editar avatar</button>
-        </figure>
+        <Link to="/">
+          <FiArrowLeft color="#f8f8f8" size="24"/>
+        </Link>
       </Header>
       <Content>
-        <h1>Meu perfil</h1>
-        <button type="button">Editar</button>
-        <form>
+        <figure>
+          <img src={avatar} alt="avatar" />
+          <button type="button">
+              <FiCamera onClick={handleAvatarChange} color="#f8f8f8" size="24"/>
+            </button>
+        </figure>
+        <Title>
+          <h1>Meu perfil</h1>
+          <div className="buttons">
+            <button type="button">
+              <FiEdit color="#02B5B2" size="24"/>
+            </button>
+            <button type="button">
+              <FiTrash color="#02B5B2" size="24"/>
+            </button>
+          </div>
+        </Title>
+        <Form>
           <fieldset>
             <legend>
               Nome
@@ -49,7 +70,7 @@ const Profile = () => {
             <input type="text"/>
           </fieldset>
           <Button type="submit">Confirmar alterações</Button>
-        </form>
+        </Form>
 
       </Content>
     </>
