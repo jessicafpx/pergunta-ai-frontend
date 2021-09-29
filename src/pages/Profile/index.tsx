@@ -7,7 +7,7 @@ import Button from '../../components/Button';
 
 import { Header, Content, Title, Form } from './styles';
 
-const Profile = () => {
+export default function Profile()  {
 
   const handleAvatarChange = () => {
 
@@ -76,5 +76,3 @@ const Profile = () => {
     </>
   );
 };
-
-export default Profile;
