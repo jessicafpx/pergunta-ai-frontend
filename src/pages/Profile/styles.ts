@@ -29,7 +29,7 @@ export const Content = styled.main`
     }
 
     button {
-      background-color: #02B5B2;
+      background-color: #FDB643;
       width: 48px;
       height: 48px;
       border-radius: 50px;
@@ -41,7 +41,7 @@ export const Content = styled.main`
       margin-left: -40px;
 
       &:hover {
-        background: ${shade(0.1, '#00BEBB')};
+        background: ${shade(0.1, '#FDB643')};
       }
     }
   }
