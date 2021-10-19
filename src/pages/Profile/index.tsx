@@ -6,7 +6,6 @@ import { FiCamera, FiArrowLeft, FiEdit, FiTrash } from 'react-icons/fi';
 import Modal from '../../components/Modal';
 import Button from '../../components/Button';
 
-import avatar from '../../assets/avatar8.png';
 import avatars from '../../assets/avatars';
 
 import { Header, Content, Title, Form } from './styles';
@@ -100,3 +99,5 @@ const Profile = () => {
     </>
   );
 };
+
+export default Profile;
