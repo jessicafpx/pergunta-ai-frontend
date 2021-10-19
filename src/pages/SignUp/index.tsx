@@ -1,6 +1,5 @@
-import React from 'react';
 
-const SignUp = () => {
+export default function SignUp() {
   return (
     <>
       <div>
@@ -26,5 +25,3 @@ const SignUp = () => {
     </>
   );
 };
-
-export default SignUp;

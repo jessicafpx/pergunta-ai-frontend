@@ -1,18 +1,21 @@
-import React from 'react';
+import logoWhiteImg from '../../assets/logo-white.svg';
+import logoBlueImg from '../../assets/logo-blue.svg';
+import illustrationImg from '../../assets/illustration.png';
 
-const Login = () => {
+import { Wrapper } from './styles';
+
+export default function Login() {
   return (
-    <>
-      <div>
-        <h3>Pergunta Aí</h3>
+    <Wrapper>
+      <aside>
         <figure>
-          <img src="" alt=""/>
-          <figcaption>Imagem de pessoas com balões de conversa</figcaption>
+          <img src={logoBlueImg} alt="logotipo Pergunta Aí" />
         </figure>
+        <img src={illustrationImg} alt="pessoas com balões de conversa" id="illustration"/>
         <h3>Aprenda e compartilhe conhecimento</h3>
-      </div>
-      <div>
-        <h1>Pergunta Aí</h1>
+      </aside>
+      <main>
+        <img src={logoWhiteImg} alt="logotipo Pergunta Aí" />
         <h2>Faça seu login</h2>
         <form>
           <input type="text" placeholder="Digite seu e-mail" />
@@ -21,9 +24,7 @@ const Login = () => {
         </form>
         <a href="#">Esqueci minha senha</a>
         <a href="/signup">Criar conta</a>
-      </div>
-    </>
+      </main>
+    </Wrapper>
   );
 };
-
-export default Login;
