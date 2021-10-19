@@ -1,17 +1,27 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FiCamera, FiArrowLeft, FiEdit, FiTrash } from 'react-icons/fi';
 
-import avatar from '../../assets/avatar1.png';
+import Modal from '../../components/Modal';
 import Button from '../../components/Button';
+
+import avatars from '../../assets/avatars';
 
 import { Header, Content, Title, Form } from './styles';
 
-export default function Profile()  {
+const Profile = () => {
+  const [isChangeAvatarModalOpen, setIsChangeAvatarModalOpen] = useState(false);
+  const [selectedAvatar, setSelectedAvatar] = useState('avatar8');
 
   const handleAvatarChange = () => {
-
+    setIsChangeAvatarModalOpen(!isChangeAvatarModalOpen);
   }
+
+  const findAvatar = () => {
+    const findedAvatar = avatars.find((item) => item.avatarName === selectedAvatar);
+    return findedAvatar?.src;
+  };
 
   return (
     <>
@@ -22,10 +32,10 @@ export default function Profile()  {
       </Header>
       <Content>
         <figure>
-          <img src={avatar} alt="avatar" />
-          <button type="button">
-              <FiCamera onClick={handleAvatarChange} color="#f8f8f8" size="24"/>
-            </button>
+          <img src={findAvatar()} alt="avatar" />
+          <button type="button" onClick={handleAvatarChange} >
+            <FiCamera color="#f8f8f8" size="24"/>
+          </button>
         </figure>
         <Title>
           <h1>Meu perfil</h1>
@@ -73,6 +83,21 @@ export default function Profile()  {
         </Form>
 
       </Content>
+
+      {isChangeAvatarModalOpen &&
+        <Modal close={handleAvatarChange} title="Alterar avatar" buttonText="Confirmar alteração">
+          <div className="avatars">
+            {avatars.map((avatar) => {
+              let selected = '';
+              if (avatar.avatarName === selectedAvatar) {
+                selected = 'selected'
+              }
+              return <img key={avatar.avatarName} src={avatar.src} className={selected} alt="avatar" onClick={() => setSelectedAvatar(avatar.avatarName)}/>
+            })}
+          </div>
+        </Modal>}
     </>
   );
 };
+
+export default Profile;
