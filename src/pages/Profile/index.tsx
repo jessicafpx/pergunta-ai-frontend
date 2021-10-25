@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { FiCamera, FiArrowLeft, FiEdit, FiTrash } from 'react-icons/fi';
+import { FiCamera, FiArrowLeft, FiEdit, FiTrash, FiChevronRight } from 'react-icons/fi';
 
 import Modal from '../../components/Modal';
 import Button from '../../components/Button';
@@ -13,13 +13,19 @@ import { Header, Content, Title, Form } from './styles';
 const Profile = () => {
   const [isChangeAvatarModalOpen, setIsChangeAvatarModalOpen] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState('avatar8');
+  const [avatar, setAvatar] = useState('avatar8');
 
-  const handleAvatarChange = () => {
+  const handleModalOpen = () => {
     setIsChangeAvatarModalOpen(!isChangeAvatarModalOpen);
-  }
+  };
+
+  const handleConfirmAvatarChange = () => {
+    setAvatar(selectedAvatar);
+    handleModalOpen();
+  };
 
   const findAvatar = () => {
-    const findedAvatar = avatars.find((item) => item.avatarName === selectedAvatar);
+    const findedAvatar = avatars.find((item) => item.avatarName === avatar);
     return findedAvatar?.src;
   };
 
@@ -33,7 +39,7 @@ const Profile = () => {
       <Content>
         <figure>
           <img src={findAvatar()} alt="avatar" />
-          <button type="button" onClick={handleAvatarChange} >
+          <button type="button" onClick={handleModalOpen} >
             <FiCamera color="#f8f8f8" size="24"/>
           </button>
         </figure>
@@ -71,13 +77,14 @@ const Profile = () => {
             <legend>
               Data de nascimento
             </legend>
-            <input type="text"/>
+            <input type="text" placeholder="dd/mm/aaaa"/>
           </fieldset>
-          <fieldset>
+          <fieldset className="input-password">
             <legend>
               Senha
             </legend>
-            <input type="text"/>
+            <input type="text" placeholder="******"/>
+            <FiChevronRight color="#012C50" size="24"/>
           </fieldset>
           <Button type="submit">Confirmar alterações</Button>
         </Form>
@@ -85,7 +92,7 @@ const Profile = () => {
       </Content>
 
       {isChangeAvatarModalOpen &&
-        <Modal close={handleAvatarChange} title="Alterar avatar" buttonText="Confirmar alteração">
+        <Modal close={handleModalOpen} confirm={handleConfirmAvatarChange} title="Alterar avatar" buttonText="Confirmar alteração">
           <div className="avatars">
             {avatars.map((avatar) => {
               let selected = '';

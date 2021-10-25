@@ -7,11 +7,12 @@ import { Overlay, Paper, CloseButton } from './styles';
 
 interface Props {
   close: () => void;
+  confirm: () => void;
   title: string;
   buttonText: string;
 }
 
-const Modal: React.FC<Props> = ({ close, title, buttonText, children }) => {
+const Modal: React.FC<Props> = ({ close, confirm, title, buttonText, children }) => {
   return (
     <Overlay>
       <Paper>
@@ -20,7 +21,7 @@ const Modal: React.FC<Props> = ({ close, title, buttonText, children }) => {
         </CloseButton>
         <h3>{title}</h3>
         {children}
-        <Button type="submit">{buttonText}</Button>
+        <Button type="submit" onClick={confirm}>{buttonText}</Button>
       </Paper>
     </Overlay>
   );
