@@ -19,12 +19,29 @@ export const Paper = styled.div`
   padding: 50px 60px 40px;
   background-color: #F8F8F8;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 24px;
+  }
 
   h3 {
     color: #012C50;
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 25px;
+  }
+
+  h5 {
+    color: #737380;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 12px 0 32px;
   }
 
   .avatars {

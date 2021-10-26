@@ -73,6 +73,7 @@ export const Form = styled.form`
     font-size: 12px;
     border: 1px #A2AEC6 solid;
     padding-left: 12px;
+    padding-right: 12px;
 
     legend {
       padding: 0 5px;
@@ -88,5 +89,11 @@ export const Form = styled.form`
       font-size: 16px;
       font-weight: 400;
     }
+  }
+
+  .input-password {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 `;
