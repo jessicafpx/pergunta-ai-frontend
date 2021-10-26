@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { FiCamera, FiArrowLeft, FiEdit, FiTrash, FiChevronRight } from 'react-icons/fi';
@@ -9,19 +9,19 @@ import Button from '../../components/Button';
 import avatars from '../../assets/avatars';
 
 import { Header, Content, Title, Form } from './styles';
+import { DefaultContext } from '../../contexts/defaultContext';
 
 const Profile = () => {
   const [isChangeAvatarModalOpen, setIsChangeAvatarModalOpen] = useState(false);
-  const [selectedAvatar, setSelectedAvatar] = useState('avatar8');
-  const [avatar, setAvatar] = useState('avatar8');
+  const { avatar, setAvatar }: any = useContext(DefaultContext);
+  const [isAccountDeleteModalOpen, setIsAccountDeleteModalOpen] = useState(false);
 
-  const handleModalOpen = () => {
+  const handleAvatarModalOpen = () => {
     setIsChangeAvatarModalOpen(!isChangeAvatarModalOpen);
   };
 
-  const handleConfirmAvatarChange = () => {
-    setAvatar(selectedAvatar);
-    handleModalOpen();
+  const handleAccountModalOpen = () => {
+    setIsAccountDeleteModalOpen(!isAccountDeleteModalOpen);
   };
 
   const findAvatar = () => {
@@ -39,7 +39,7 @@ const Profile = () => {
       <Content>
         <figure>
           <img src={findAvatar()} alt="avatar" />
-          <button type="button" onClick={handleModalOpen} >
+          <button type="button" onClick={handleAvatarModalOpen} >
             <FiCamera color="#f8f8f8" size="24"/>
           </button>
         </figure>
@@ -49,7 +49,7 @@ const Profile = () => {
             <button type="button">
               <FiEdit color="#02B5B2" size="24"/>
             </button>
-            <button type="button">
+            <button type="button" onClick={handleAccountModalOpen}>
               <FiTrash color="#02B5B2" size="24"/>
             </button>
           </div>
@@ -91,18 +91,13 @@ const Profile = () => {
 
       </Content>
 
+
       {isChangeAvatarModalOpen &&
-        <Modal close={handleModalOpen} confirm={handleConfirmAvatarChange} title="Alterar avatar" buttonText="Confirmar alteração">
-          <div className="avatars">
-            {avatars.map((avatar) => {
-              let selected = '';
-              if (avatar.avatarName === selectedAvatar) {
-                selected = 'selected'
-              }
-              return <img key={avatar.avatarName} src={avatar.src} className={selected} alt="avatar" onClick={() => setSelectedAvatar(avatar.avatarName)}/>
-            })}
-          </div>
-        </Modal>}
+        <Modal type="avatar" close={handleAvatarModalOpen} />
+      }
+      {isAccountDeleteModalOpen &&
+        <Modal type="accountDelete" close={handleAccountModalOpen} />
+      }
     </>
   );
 };
