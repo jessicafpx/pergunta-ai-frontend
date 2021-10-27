@@ -21,8 +21,8 @@ interface Props {
 
 
 const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonText }) => {
-  const [selectedAvatar, setSelectedAvatar] = useState('avatar8');
   const { avatar, setAvatar }: any = useContext(DefaultContext);
+  const [selectedAvatar, setSelectedAvatar] = useState(avatar);
 
   const handleAvatarChange = () => {
     setAvatar(selectedAvatar);
@@ -40,12 +40,12 @@ const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonT
           <>
             <h3>Alterar avatar</h3>
             <div className="avatars">
-              {avatars.map((avatar) => {
+              {avatars.map((img) => {
                 let selected = '';
-                if (avatar.avatarName === selectedAvatar) {
+                if (img.avatarName === selectedAvatar) {
                   selected = 'selected'
                 }
-                return <img key={avatar.avatarName} src={avatar.src} className={selected} alt="avatar" onClick={() => setSelectedAvatar(avatar.avatarName)}/>
+                return <img key={img.avatarName} src={img.src} className={selected} alt="avatar" onClick={() => setSelectedAvatar(img.avatarName)}/>
               })}
             </div>
             <Button type="submit" onClick={handleAvatarChange}>Confirmar alteração</Button>
