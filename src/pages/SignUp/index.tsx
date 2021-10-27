@@ -1,5 +1,18 @@
+import { useCallback, useRef } from "react";
+import { Link } from "react-router-dom";
+import getValidationErrors from "../../utils/getValidationErrors";
+import * as Yup from 'yup';
+import api from '../../services/api';
 
 export default function SignUp() {
+
+  const handleSubmit = useCallback(async(event) => {
+    event.preventDefault();
+    const users = await api.get('user')
+    console.log(users)
+  }, []);
+
+
   return (
     <>
       <div>
@@ -13,14 +26,16 @@ export default function SignUp() {
       <div>
         <h1>Pergunta Aí</h1>
         <h2>Faça seu cadastro</h2>
-        <form>
-          <input type="text" placeholder="Nome e sobrenome" />
-          <input type="text" placeholder="Digite seu curso" />
-          <input type="text" placeholder="Digite seu e-mail" />
-          <input type="password" placeholder="Digite uma senha" />
+        <form onSubmit={handleSubmit}>
+          <input id="name" name="name" type="text" placeholder="Nome e sobrenome" />
+          <input id="course" name="course" type="text" placeholder="Digite seu curso" />
+          <input id="email" name="email" type="text" placeholder="Digite seu e-mail" />
+          <input id="password" name="password" type="password" placeholder="Digite uma senha" />
           <button type="submit">Cadastrar</button>
         </form>
-        <a href="/login"> Voltar para login</a>
+
+        <Link to="/login">Voltar para login</Link>
+
       </div>
     </>
   );
