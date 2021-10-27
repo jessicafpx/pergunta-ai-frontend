@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://perguntaai-env-1.eba-dfemfgsm.us-east-1.elasticbeanstalk.com/api/v1/',
+  baseURL: process.env.REACT_APP_API_URL,
 });
 
 export default api;
