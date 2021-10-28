@@ -5,8 +5,7 @@ const api = axios.create({
   httpsAgent: new https.Agent({
     rejectUnauthorized: false
   }),
-  baseURL: "http://localhost:3000/",
+  baseURL: process.env.REACT_APP_API_URL,
 });
-
 
 export default api;
