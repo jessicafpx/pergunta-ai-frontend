@@ -9,11 +9,11 @@ import SignUp from '../pages/SignUp';
 
 const Routes = () => (
   <Switch>
-    <Route path="/" exact component={Dashboard} />
+    <Route path="/" exact component={Login} />
     <Route path="/login" exact component={Login} />
     <Route path="/profile" exact component={Profile} />
     <Route path="/signup" exact component={SignUp} />
-  </Switch>  
+  </Switch>
 );
 
 export default Routes;
