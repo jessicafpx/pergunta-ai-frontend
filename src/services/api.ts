@@ -5,7 +5,7 @@ const api = axios.create({
   httpsAgent: new https.Agent({
     rejectUnauthorized: false
   }),
-  baseURL: "http://localhost:3000/",
+  baseURL: "https://pergunta-ai.vercel.app/",
 });
 
 
