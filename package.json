@@ -25,6 +25,7 @@
     "web-vitals": "^1.0.1",
     "yup": "^0.32.9"
   },
+  "proxy": "http://perguntaai-env-1.eba-dfemfgsm.us-east-1.elasticbeanstalk.com/api/v1",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
