@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 
@@ -6,7 +6,6 @@ import { FiArrowLeft } from 'react-icons/fi';
 import api from '../../services/api';
 
 // assets
-import logoWhiteImg from '../../assets/logo-white.svg';
 import logoBlueImg from '../../assets/logo-blue.svg';
 import illustrationImg from '../../assets/illustration.png';
 
@@ -34,7 +33,6 @@ export default function SignUp() {
       </aside>
       <main>
         <div className="content">
-          <img src={logoWhiteImg} alt="logotipo Pergunta Aí" />
           <h2>Faça seu cadastro</h2>
           <form onSubmit={handleSubmit}>
             <Input id="name" name="name" type="text" placeholder="Nome e sobrenome" />
