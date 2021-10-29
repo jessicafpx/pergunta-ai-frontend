@@ -1,6 +1,4 @@
-import React from 'react';
-
-const Login = () => {
+const Dashboard = () => {
   return (
     <div>
       <a href="/login">login</a>
@@ -10,4 +8,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Dashboard;

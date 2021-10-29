@@ -5,7 +5,6 @@ export const Wrapper = styled.div`
   background-color: #012C50;
   display: flex;
 
-
   aside {
     height: 100vh;
     display: flex;

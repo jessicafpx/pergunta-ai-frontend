@@ -14,8 +14,8 @@ import illustrationImg from '../../assets/illustration.png';
 import { Wrapper } from './styles';
 
 export default function Login() {
-  const[email, setEmail] = useState('');
-  const[password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const history = useHistory();
 
@@ -44,7 +44,7 @@ export default function Login() {
             <Input icon={FiLock} name="password" type="password" placeholder="Digite a senha" onChange={(e)=>setPassword(e.target.value)} />
             <Button type="submit">Entrar</Button>
           </form>
-          <Link to="/">Esqueci minha senha</Link>
+          <Link to="/forgot-password">Esqueci minha senha</Link>
           <Link className="signup" to="/signup">
             <FiLogIn />
             Criar conta
