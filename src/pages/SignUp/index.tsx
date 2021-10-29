@@ -40,7 +40,8 @@ export default function SignUp() {
             <Input id="name" name="name" type="text" placeholder="Nome e sobrenome" />
             <Input id="course" name="course" type="text" placeholder="Digite seu curso" />
             <Input id="email" name="email" type="text" placeholder="Digite seu e-mail" />
-            <Input id="password" name="password" type="password" placeholder="Digite uma senha" />
+            <Input id="password1" name="password1" type="password" placeholder="Digite uma senha" />
+            <Input id="password2" name="password2" type="password" placeholder="Repita a senha" />
             <Button type="submit">Cadastrar</Button>
           </form>
           <Link className="login" to="/login">
