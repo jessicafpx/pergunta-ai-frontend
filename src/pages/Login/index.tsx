@@ -11,19 +11,26 @@ import logoWhiteImg from '../../assets/logo-white.svg';
 import logoBlueImg from '../../assets/logo-blue.svg';
 import illustrationImg from '../../assets/illustration.png';
 
+import api from '../../services/api';
+import { useAuth } from '../../contexts/auth';
+
 import { Wrapper } from './styles';
 
 export default function Login() {
   const[email, setEmail] = useState('');
   const[password, setPassword] = useState('');
 
+  const { signIn } = useAuth();
   const history = useHistory();
 
-  const handleSubmitForm = useCallback(async (e)=>{
+  const handleSubmitForm = useCallback(async e =>{
     e.preventDefault();
-    console.log({email, password})
+    // console.log({email, password})
 
-    history.push("/profile");
+    await signIn({ email, password });
+
+
+    // history.push("/profile");
   }, [email, password])
 
   return (
