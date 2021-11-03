@@ -37,6 +37,14 @@ export const Paper = styled.div`
     margin-bottom: 25px;
   }
 
+  h4 {
+    color: #012C50;
+    font-size: 16px;
+    font-weight: 700;
+    max-width: 244px;
+    text-align: center;
+  }
+
   h5 {
     color: #737380;
     font-size: 16px;

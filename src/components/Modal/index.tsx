@@ -72,7 +72,8 @@ const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonT
       case 'feedback':
         return (
           <>
-
+            <h4>{title}</h4>
+            <Button type="submit" onClick={close}>{buttonText}</Button>
           </>
         )
       default:

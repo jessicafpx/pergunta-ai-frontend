@@ -53,6 +53,7 @@ const AuthProvider: React.FC = ({ children }) => {
     const { name, avatarOptions } = userRes.data;
 
     const user = { id, name, email, avatarOptions }
+    console.log(user)
 
     localStorage.setItem('@PerguntaAi:token', token);
     localStorage.setItem('@PerguntaAi:user', JSON.stringify(user));

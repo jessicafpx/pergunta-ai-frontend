@@ -4,11 +4,17 @@ import { shade } from 'polished';
 export const Header = styled.header`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: #012C50;
   height: 145px;
 
-  svg {
+  .arrow-left {
     margin-left: 7vw;
+  }
+
+  .logout {
+    margin-right: 7vw;
+    cursor: pointer;
   }
 `;
 
