@@ -1,7 +1,7 @@
-import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useCallback, useContext, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
-import { FiCamera, FiArrowLeft, FiEdit, FiTrash, FiChevronRight } from 'react-icons/fi';
+import { FiCamera, FiArrowLeft, FiEdit, FiTrash, FiChevronRight, FiLogOut } from 'react-icons/fi';
 
 import Modal from '../../components/Modal';
 import Button from '../../components/Button';
@@ -10,11 +10,15 @@ import avatars from '../../assets/avatars';
 
 import { Header, Content, Title, Form } from './styles';
 import { DefaultContext } from '../../contexts/defaultContext';
+import { useAuth } from '../../contexts/auth';
 
 const Profile = () => {
   const [isChangeAvatarModalOpen, setIsChangeAvatarModalOpen] = useState(false);
   const { avatar, setAvatar }: any = useContext(DefaultContext);
   const [isAccountDeleteModalOpen, setIsAccountDeleteModalOpen] = useState(false);
+
+  const { signOut } = useAuth();
+  const history = useHistory();
 
   const handleAvatarModalOpen = () => {
     setIsChangeAvatarModalOpen(!isChangeAvatarModalOpen);
@@ -29,12 +33,18 @@ const Profile = () => {
     return findedAvatar?.src;
   };
 
+  const handleLogOut = useCallback(async() => {
+    signOut();
+    history.push('/');
+  }, []);
+
   return (
     <>
       <Header>
         <Link to="/">
-          <FiArrowLeft color="#f8f8f8" size="24"/>
+          <FiArrowLeft color="#f8f8f8" size="24" className="arrow-left"/>
         </Link>
+        <FiLogOut color="#f8f8f8" size="24" className="logout" onClick={handleLogOut}/>
       </Header>
       <Content>
         <figure>

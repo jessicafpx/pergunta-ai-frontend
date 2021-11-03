@@ -1,17 +1,18 @@
 import { useCallback, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
+import { FiMail, FiLock, FiLogIn } from 'react-icons/fi';
+
 // components
 import Button from '../../components/Button';
 import Input from '../../components/Input';
-import { FiMail, FiLock, FiLogIn } from 'react-icons/fi';
+import Modal from '../../components/Modal';
 
 // assets
 import logoWhiteImg from '../../assets/logo-white.svg';
 import logoBlueImg from '../../assets/logo-blue.svg';
 import illustrationImg from '../../assets/illustration.png';
 
-import api from '../../services/api';
 import { useAuth } from '../../contexts/auth';
 
 import { Wrapper } from './styles';
@@ -19,18 +20,21 @@ import { Wrapper } from './styles';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
   const { signIn } = useAuth();
   const history = useHistory();
 
   const handleSubmitForm = useCallback(async e =>{
     e.preventDefault();
-    // console.log({email, password})
 
-    await signIn({ email, password });
-
-
-    // history.push("/profile");
+    try {
+      await signIn({ email, password });
+      history.push("/profile");
+    } catch (err) {
+      setIsErrorModalOpen(true);
+      console.log(err)
+    }
   }, [email, password])
 
   return (
@@ -58,6 +62,10 @@ export default function Login() {
           </Link>
         </div>
       </main>
+
+      {isErrorModalOpen &&
+        <Modal type="feedback" close={() => setIsErrorModalOpen(false)} title="E-mail ou senha inválidos. Por favor, revise e tente novamente." buttonText="OK"/>
+      }
     </Wrapper>
   );
 };
