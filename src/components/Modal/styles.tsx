@@ -24,6 +24,10 @@ export const Paper = styled.div`
   justify-content: center;
   align-items: center;
 
+  .title {
+    width: 100%;
+  }
+
   h2 {
     font-size: 22px;
     font-weight: 700;
@@ -76,4 +80,35 @@ export const CloseButton = styled.button`
   background: transparent;
   border: 0;
   cursor: pointer;
+`;
+
+export const Form = styled.form`
+    fieldset {
+      margin-bottom: 16px;
+      border-radius: 10px;
+      color: #8B98B1;
+      font-size: 12px;
+      border: 1px #A2AEC6 solid;
+      padding-left: 12px;
+      padding-right: 12px;
+
+      legend {
+        padding: 0 5px;
+      }
+
+      input {
+        width: 100%;
+        padding: 5px 7px 8px;
+        text-overflow: ellipsis;
+        background-color: transparent;
+        border: 0;
+        color: #012C50;
+        font-size: 16px;
+        font-weight: 400;
+
+        &::placeholder {
+          color: #8B98B1;
+        }
+      }
+    }
 `;

@@ -1,13 +1,12 @@
-import React, {useContext, useState} from 'react';
-import { FiDelete, FiTrash, FiX, FiXCircle } from 'react-icons/fi';
-
-import { DefaultContext } from '../../contexts/defaultContext';
+import React, {useCallback, useState} from 'react';
+import { FiTrash, FiX, FiXCircle } from 'react-icons/fi';
 
 import Button from '../Button';
 
 import avatars from '../../assets/avatars';
 
-import { Overlay, Paper, CloseButton } from './styles';
+import { Overlay, Paper, CloseButton, Form } from './styles';
+import { useAuth } from '../../contexts/auth';
 
 interface Props {
   close: () => void;
@@ -15,17 +14,20 @@ interface Props {
   title?: string;
   subtitle?: string;
   buttonText?: string;
-  type: 'avatar' | 'accountDelete' | 'questionOrAnswerDelete' |  'feedback';
+  type: 'avatar' | 'accountDelete' | 'questionOrAnswerDelete' |  'feedback' | 'passwordChange' ;
 };
 
-
-
 const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonText }) => {
-  const { avatar, setAvatar }: any = useContext(DefaultContext);
-  const [selectedAvatar, setSelectedAvatar] = useState(avatar);
+  const { user, updateUser } = useAuth();
+  const [selectedAvatar, setSelectedAvatar] = useState(user.avatar);
+  const [inputOldPassword, setInputOldPassword] = useState('');
+  const [inputNewPassword, setInputNewPassword] = useState('');
+  const [inputNewPasswordAgain, setInputNewPasswordAgain] = useState('');
 
   const handleAvatarChange = () => {
-    setAvatar(selectedAvatar);
+    const newUser = {...user, avatar: selectedAvatar}
+    updateUser(newUser);
+    // TODO: update req avatar
     close();
   }
 
@@ -33,12 +35,19 @@ const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonT
     close();
   }
 
+  const handlePasswordChange = useCallback(async(event) => {
+    event.preventDefault();
+    console.log('submitou')
+  }, []);
+
   const ModalContent = () => {
     switch (type) {
       case 'avatar':
         return (
           <>
-            <h3>Alterar avatar</h3>
+            <div className="title">
+              <h3>Alterar avatar</h3>
+            </div>
             <div className="avatars">
               {avatars.map((img) => {
                 let selected = '';
@@ -92,6 +101,34 @@ const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonT
           </CloseButton>
         }
         <ModalContent />
+        {type === 'passwordChange' && (
+          <>
+            <div className="title">
+              <h3>Alterar senha</h3>
+            </div>
+            <Form onSubmit={handlePasswordChange}>
+              <fieldset>
+                <legend>
+                  Senha atual
+                </legend>
+                <input type="password" value={inputOldPassword} onChange={(e) => setInputOldPassword(e.target.value)} />
+              </fieldset>
+              <fieldset>
+                <legend>
+                  Nova senha
+                </legend>
+                <input type="password" value={inputNewPassword} onChange={(e) => setInputNewPassword(e.target.value)} />
+              </fieldset>
+              <fieldset>
+                <legend>
+                  Confirmação da nova senha
+                </legend>
+                <input type="password" value={inputNewPasswordAgain} onChange={(e) => setInputNewPasswordAgain(e.target.value)} />
+              </fieldset>
+              <Button type="submit">Confirmar alteração</Button>
+            </Form>
+          </>
+        )}
       </Paper>
     </Overlay>
   );
