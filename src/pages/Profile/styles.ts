@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import { shade } from 'polished';
 
 export const Header = styled.header`
@@ -71,35 +71,53 @@ export const Title = styled.section`
     }
 `;
 
+interface InputProps {
+  isDisabled?: boolean;
+}
+
 export const Form = styled.form`
-  fieldset {
-    margin-bottom: 16px;
-    border-radius: 10px;
-    color: #8B98B1;
-    font-size: 12px;
-    border: 1px #A2AEC6 solid;
-    padding-left: 12px;
-    padding-right: 12px;
+    fieldset {
+      margin-bottom: 16px;
+      border-radius: 10px;
+      color: #8B98B1;
+      font-size: 12px;
+      border: 1px #A2AEC6 solid;
+      padding-left: 12px;
+      padding-right: 12px;
 
-    legend {
-      padding: 0 5px;
+      legend {
+        padding: 0 5px;
+      }
+
+      input {
+        width: 100%;
+
+        &::placeholder {
+          color: #8B98B1;
+        }
+      }
     }
 
-    input {
-      width: 100%;
-      padding: 5px 7px 8px;
-      text-overflow: ellipsis;
-      background-color: transparent;
-      border: 0;
-      color: #012C50;
-      font-size: 16px;
-      font-weight: 400;
+    .input-password {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      input {
+        cursor: pointer;
+      }
     }
-  }
-
-  .input-password {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
 `;
+
+export const Input = styled.input<InputProps>`
+  ${({isDisabled}) => css`
+    padding: 5px 7px 8px;
+    text-overflow: ellipsis;
+    background-color: transparent;
+    border: 0;
+    color: ${isDisabled ? '#8B98B1' : '#012C50'};
+    cursor: ${isDisabled && 'not-allowed'};
+    font-size: 16px;
+    font-weight: 400;
+  `}
+`
