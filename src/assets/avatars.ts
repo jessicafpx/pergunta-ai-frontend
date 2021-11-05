@@ -12,18 +12,18 @@ import avatar11 from './avatar11.png';
 import avatar12 from './avatar12.png';
 
 const avatars = [
-  {src:avatar1, avatarName: 'avatar1'},
-  {src:avatar2, avatarName: 'avatar2'},
-  {src:avatar3, avatarName: 'avatar3'},
-  {src:avatar4, avatarName: 'avatar4'},
-  {src:avatar5, avatarName: 'avatar5'},
-  {src:avatar6, avatarName: 'avatar6'},
-  {src:avatar7, avatarName: 'avatar7'},
-  {src:avatar8, avatarName: 'avatar8'},
-  {src:avatar9, avatarName: 'avatar9'},
-  {src:avatar10, avatarName: 'avatar10'},
-  {src:avatar11, avatarName: 'avatar11'},
-  {src:avatar12, avatarName: 'avatar12'},
+  {src:avatar1, avatarName: 'AVATAR1'},
+  {src:avatar2, avatarName: 'AVATAR2'},
+  {src:avatar3, avatarName: 'AVATAR3'},
+  {src:avatar4, avatarName: 'AVATAR4'},
+  {src:avatar5, avatarName: 'AVATAR5'},
+  {src:avatar6, avatarName: 'AVATAR6'},
+  {src:avatar7, avatarName: 'AVATAR7'},
+  {src:avatar8, avatarName: 'AVATAR8'},
+  {src:avatar9, avatarName: 'AVATAR9'},
+  {src:avatar10, avatarName: 'AVATAR10'},
+  {src:avatar11, avatarName: 'AVATAR11'},
+  {src:avatar12, avatarName: 'AVATAR12'},
 ];
 
 export default avatars;
