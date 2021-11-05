@@ -1,29 +1,7 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
+import { AuthContextData, AuthState, User } from '../models/user';
 import api from '../services/api';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatarOptions: string;
-}
-
-interface AuthState {
-  token: string;
-  user: User;
-}
-
-interface SigInCredentials {
-  email: string;
-  password: string;
-}
-
-interface AuthContextData {
-  user: User;
-  signIn(credentials: SigInCredentials): Promise<void>;
-  signOut(): void;
-  updateUser(user: User): void;
-}
+import { DefaultContext } from './defaultContext';
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
@@ -50,10 +28,11 @@ const AuthProvider: React.FC = ({ children }) => {
     const {id, token} = authRes.data;
 
     const userRes = await api.get(`user/${id}`)
-    const { name, avatarOptions } = userRes.data;
+    const { name, avatarOptions, birthDate, course } = userRes.data;
 
-    const user = { id, name, email, avatarOptions }
-    console.log(user)
+    const avatar = avatarOptions || 'avatar1';
+
+    const user = { id, name, email, avatar, birthDate, course }
 
     localStorage.setItem('@PerguntaAi:token', token);
     localStorage.setItem('@PerguntaAi:user', JSON.stringify(user));
