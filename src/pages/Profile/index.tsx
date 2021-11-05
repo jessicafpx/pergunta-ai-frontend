@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 import { FiCamera, FiArrowLeft, FiEdit, FiTrash, FiChevronRight, FiLogOut } from 'react-icons/fi';
@@ -8,17 +8,25 @@ import Button from '../../components/Button';
 
 import avatars from '../../assets/avatars';
 
-import { Header, Content, Title, Form } from './styles';
-import { DefaultContext } from '../../contexts/defaultContext';
+import { Header, Content, Title, Form, Input } from './styles';
 import { useAuth } from '../../contexts/auth';
 
 const Profile = () => {
-  const [isChangeAvatarModalOpen, setIsChangeAvatarModalOpen] = useState(false);
-  const { avatar, setAvatar }: any = useContext(DefaultContext);
-  const [isAccountDeleteModalOpen, setIsAccountDeleteModalOpen] = useState(false);
+  const { signOut, user } = useAuth();
 
-  const { signOut } = useAuth();
+  const [isChangeAvatarModalOpen, setIsChangeAvatarModalOpen] = useState(false);
+  const [isAccountDeleteModalOpen, setIsAccountDeleteModalOpen] = useState(false);
+  const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] = useState(false);
+
+  const [inputName, setInputName] = useState(user.name);
+  const [inputCourse, setInputCourse] = useState(user.course);
+  const [inputBirth, setInputBirth] = useState(user.birthDate);
+  const [isDisabled, setIsDisabled] = useState(true);
+
   const history = useHistory();
+
+  console.log(user)
+  console.log('user', user)
 
   const handleAvatarModalOpen = () => {
     setIsChangeAvatarModalOpen(!isChangeAvatarModalOpen);
@@ -28,8 +36,12 @@ const Profile = () => {
     setIsAccountDeleteModalOpen(!isAccountDeleteModalOpen);
   };
 
+  const handlePasswordChangeModalOpen = () => {
+    setIsPasswordChangeModalOpen(!isPasswordChangeModalOpen);
+  };
+
   const findAvatar = () => {
-    const findedAvatar = avatars.find((item) => item.avatarName === avatar);
+    const findedAvatar = avatars.find((item) => item.avatarName === user.avatar);
     return findedAvatar?.src;
   };
 
@@ -56,7 +68,7 @@ const Profile = () => {
         <Title>
           <h1>Meu perfil</h1>
           <div className="buttons">
-            <button type="button">
+            <button type="button" onClick={() => setIsDisabled(state => !state)}>
               <FiEdit color="#02B5B2" size="24"/>
             </button>
             <button type="button" onClick={handleAccountModalOpen}>
@@ -69,34 +81,36 @@ const Profile = () => {
             <legend>
               Nome
             </legend>
-            <input type="text"/>
+            <Input type="text" disabled={isDisabled} value={inputName} onChange={(e) => setInputName(e.target.value)} isDisabled={isDisabled}/>
           </fieldset>
           <fieldset>
             <legend>
               Curso
             </legend>
-            <input type="text"/>
+            <Input type="text" disabled={isDisabled} value={inputCourse} onChange={(e) => setInputCourse(e.target.value)} isDisabled={isDisabled}/>
           </fieldset>
           <fieldset>
             <legend>
               E-mail
             </legend>
-            <input type="text"/>
+            <Input type="text" disabled value={user.email} isDisabled/>
           </fieldset>
           <fieldset>
             <legend>
               Data de nascimento
             </legend>
-            <input type="text" placeholder="dd/mm/aaaa"/>
+            <Input type="text" placeholder="dd/mm/aaaa" disabled={isDisabled} value={inputBirth || 'dd/mm/aaaa'} onChange={(e) => setInputBirth(e.target.value)} isDisabled={isDisabled}/>
           </fieldset>
-          <fieldset className="input-password">
+          <fieldset className="input-password" onClick={() => setIsPasswordChangeModalOpen(state => !state)}>
             <legend>
               Senha
             </legend>
-            <input type="text" placeholder="******"/>
+            <Input type="text" disabled placeholder="******" />
             <FiChevronRight color="#012C50" size="24"/>
           </fieldset>
-          <Button type="submit">Confirmar alterações</Button>
+          <Button type="submit" isDisabled={isDisabled}>
+            Confirmar alterações
+          </Button>
         </Form>
 
       </Content>
@@ -107,6 +121,9 @@ const Profile = () => {
       }
       {isAccountDeleteModalOpen &&
         <Modal type="accountDelete" close={handleAccountModalOpen} />
+      }
+      {isPasswordChangeModalOpen &&
+        <Modal type="passwordChange" close={handlePasswordChangeModalOpen} />
       }
     </>
   );
