@@ -10,9 +10,10 @@ import avatars from '../../assets/avatars';
 
 import { Header, Content, Title, Form, Input } from './styles';
 import { useAuth } from '../../contexts/auth';
+import api from '../../services/api';
 
 const Profile = () => {
-  const { signOut, user } = useAuth();
+  const { signOut, user, updateUser } = useAuth();
 
   const [isChangeAvatarModalOpen, setIsChangeAvatarModalOpen] = useState(false);
   const [isAccountDeleteModalOpen, setIsAccountDeleteModalOpen] = useState(false);
@@ -24,9 +25,6 @@ const Profile = () => {
   const [isDisabled, setIsDisabled] = useState(true);
 
   const history = useHistory();
-
-  console.log(user)
-  console.log('user', user)
 
   const handleAvatarModalOpen = () => {
     setIsChangeAvatarModalOpen(!isChangeAvatarModalOpen);
@@ -48,7 +46,25 @@ const Profile = () => {
   const handleLogOut = useCallback(async() => {
     signOut();
     history.push('/');
-  }, []);
+  }, [history, signOut]);
+
+  const handleProfileUpdate = useCallback(async(event) => {
+    event.preventDefault();
+
+    const newUser = {...user, name: inputName, course: inputCourse, birthDate: inputBirth}
+    updateUser(newUser);
+
+    await api.put(`/user/${user.id}`, {
+      name: newUser.name,
+      course: newUser.course,
+      avatarOptions: newUser.avatar,
+      birthDate: newUser.birthDate
+    });
+
+    setIsDisabled(true);
+  }, [inputBirth, inputCourse, inputName, updateUser, user]);
+
+
 
   return (
     <>
@@ -76,7 +92,7 @@ const Profile = () => {
             </button>
           </div>
         </Title>
-        <Form>
+        <Form onSubmit={handleProfileUpdate}>
           <fieldset>
             <legend>
               Nome
@@ -99,7 +115,7 @@ const Profile = () => {
             <legend>
               Data de nascimento
             </legend>
-            <Input type="text" placeholder="dd/mm/aaaa" disabled={isDisabled} value={inputBirth || 'dd/mm/aaaa'} onChange={(e) => setInputBirth(e.target.value)} isDisabled={isDisabled}/>
+            <Input type="text" placeholder="aaaa-mm-dd" disabled={isDisabled} value={inputBirth} onChange={(e) => setInputBirth(e.target.value)} isDisabled={isDisabled}/>
           </fieldset>
           <fieldset className="input-password" onClick={() => setIsPasswordChangeModalOpen(state => !state)}>
             <legend>
