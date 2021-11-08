@@ -7,6 +7,7 @@ import avatars from '../../assets/avatars';
 
 import { Overlay, Paper, CloseButton, Form } from './styles';
 import { useAuth } from '../../contexts/auth';
+import api from '../../services/api';
 
 interface Props {
   close: () => void;
@@ -24,12 +25,20 @@ const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonT
   const [inputNewPassword, setInputNewPassword] = useState('');
   const [inputNewPasswordAgain, setInputNewPasswordAgain] = useState('');
 
-  const handleAvatarChange = () => {
+  const handleAvatarChange = useCallback(async() => {
     const newUser = {...user, avatar: selectedAvatar}
     updateUser(newUser);
-    // TODO: update req avatar
+
+    const response = await api.put(`/user/${user.id}`, {
+      name: newUser.name,
+      course: newUser.course,
+      avatarOptions: newUser.avatar,
+      birthDate: newUser.birthDate
+    });
+    console.log(response)
+
     close();
-  }
+  }, [close, selectedAvatar, updateUser, user]);
 
   const handleAccountDelete = () => {
     close();
