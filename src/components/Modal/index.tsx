@@ -7,6 +7,8 @@ import avatars from '../../assets/avatars';
 
 import { Overlay, Paper, CloseButton, Form } from './styles';
 import { useAuth } from '../../contexts/auth';
+import api from '../../services/api';
+import { useHistory } from 'react-router';
 
 interface Props {
   close: () => void;
@@ -18,27 +20,52 @@ interface Props {
 };
 
 const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonText }) => {
-  const { user, updateUser } = useAuth();
-  const [selectedAvatar, setSelectedAvatar] = useState(user.avatar);
-  const [inputOldPassword, setInputOldPassword] = useState('');
+  const { user, updateUser, signOut } = useAuth();
+  const [selectedAvatar, setSelectedAvatar] = useState(user?.avatar || 'AVATAR1');
   const [inputNewPassword, setInputNewPassword] = useState('');
   const [inputNewPasswordAgain, setInputNewPasswordAgain] = useState('');
 
-  const handleAvatarChange = () => {
+  const history = useHistory();
+
+  const handleAvatarChange = useCallback(async() => {
     const newUser = {...user, avatar: selectedAvatar}
     updateUser(newUser);
-    // TODO: update req avatar
-    close();
-  }
 
-  const handleAccountDelete = () => {
+    await api.put(`/user/${user.id}`, {
+      name: newUser.name,
+      course: newUser.course,
+      avatarOptions: newUser.avatar,
+      birthDate: newUser.birthDate
+    });
+
     close();
-  }
+  }, [close, selectedAvatar, updateUser, user]);
 
   const handlePasswordChange = useCallback(async(event) => {
     event.preventDefault();
-    console.log('submitou')
-  }, []);
+
+    if (inputNewPassword === inputNewPasswordAgain) {
+      if (inputNewPassword.length >= 6) {
+        await api.put(`/user/password/${user.id}`, {
+          password: inputNewPassword
+        });
+        close();
+      } else {
+        alert('senha precisa ter no mínimo 6 caracteres');
+      }
+    } else {
+      alert('senhas não são iguais');
+    }
+
+  }, [close, inputNewPassword, inputNewPasswordAgain, user?.id]);
+
+  const handleAccountDelete = useCallback(async() => {
+    await api.delete(`/user/${user.id}`);
+    signOut();
+    close();
+    history.push('/');
+
+  }, [close, history, signOut, user?.id]);
 
   const ModalContent = () => {
     switch (type) {
@@ -107,12 +134,6 @@ const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonT
               <h3>Alterar senha</h3>
             </div>
             <Form onSubmit={handlePasswordChange}>
-              <fieldset>
-                <legend>
-                  Senha atual
-                </legend>
-                <input type="password" value={inputOldPassword} onChange={(e) => setInputOldPassword(e.target.value)} />
-              </fieldset>
               <fieldset>
                 <legend>
                   Nova senha

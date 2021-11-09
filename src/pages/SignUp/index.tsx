@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { useCallback, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 
 // api
@@ -14,13 +14,82 @@ import Button from '../../components/Button';
 import Input from '../../components/Input';
 
 import { Wrapper } from './styles';
+import Modal from '../../components/Modal';
 
 export default function SignUp() {
+  const history = useHistory();
+
+  const [inputName, setInputName] = useState('');
+  const [inputCourse, setInputCourse] = useState('');
+  const [inputEmail, setInputEmail] = useState('');
+  const [inputPassword, setInputPassword] = useState('');
+  const [inputPasswordAgain, setInputPasswordAgain] = useState('');
+  const [isModalErrorOpen, setIsModalErrorOpen] = useState(false);
+  const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+
+  const verifyInput = useCallback((inputValue: string): boolean=> {
+    return !!inputValue
+  },[])
+
   const handleSubmit = useCallback(async(event) => {
     event.preventDefault();
-    const users = await api.get('user')
-    console.log(users)
-  }, []);
+    if (!verifyInput(inputName) ||
+    !verifyInput(inputCourse) ||
+    !verifyInput(inputEmail) ||
+    !verifyInput(inputPassword) ||
+    !verifyInput(inputPasswordAgain)) {
+      setErrorMsg('Preencha todos os campos!')
+      setIsModalErrorOpen(true);
+      return;
+    }
+
+    if (inputPassword !== inputPasswordAgain) {
+      setErrorMsg('As senhas devem ser iguais!');
+      setIsModalErrorOpen(true);
+      return;
+    }
+
+    if (inputPassword.length < 6) {
+      setErrorMsg('A senha deve ter pelo menos 6 caracteres!');
+      setIsModalErrorOpen(true);
+      return;
+    }
+
+    if (inputName.length < 6) {
+      setErrorMsg('Nome deve ter pelo menos 6 caracteres');
+      setIsModalErrorOpen(true);
+      return;
+    }
+
+    if (!inputEmail.match('@pucgo.edu.br')) {
+      setErrorMsg('e-mail precisa ser do domínio @pucgo.edu.br');
+      setIsModalErrorOpen(true);
+      return;
+    }
+
+    const newUser = {
+      name: inputName,
+      email: inputEmail,
+      password: inputPassword,
+      course: inputCourse
+    }
+
+    try {
+      await api.post('user/registration', newUser)
+      setIsModalSuccessOpen(true);
+
+    } catch (err) {
+      setIsModalErrorOpen(true);
+    }
+
+  }, [inputCourse, inputEmail, inputName, inputPassword, inputPasswordAgain, verifyInput]);
+
+  const handleClickOkInSuccessModal = () => {
+    setIsModalSuccessOpen(false);
+    history.push('/login');
+  }
 
   return (
     <Wrapper>
@@ -35,11 +104,11 @@ export default function SignUp() {
         <div className="content">
           <h2>Faça seu cadastro</h2>
           <form onSubmit={handleSubmit}>
-            <Input id="name" name="name" type="text" placeholder="Nome e sobrenome" />
-            <Input id="course" name="course" type="text" placeholder="Digite seu curso" />
-            <Input id="email" name="email" type="text" placeholder="Digite seu e-mail" />
-            <Input id="password1" name="password1" type="password" placeholder="Digite uma senha" />
-            <Input id="password2" name="password2" type="password" placeholder="Repita a senha" />
+            <Input id="name"  type="text" placeholder="Nome e sobrenome" onChange={(e) => setInputName(e.target.value)}/>
+            <Input id="course" type="text" placeholder="Digite seu curso" onChange={(e) => setInputCourse(e.target.value)}/>
+            <Input id="email" type="text" placeholder="Digite seu e-mail" onChange={(e) => setInputEmail(e.target.value)}/>
+            <Input id="password1" type="password" placeholder="Digite uma senha" onChange={(e) => setInputPassword(e.target.value)}/>
+            <Input id="password2" type="password" placeholder="Repita a senha" onChange={(e) => setInputPasswordAgain(e.target.value)}/>
             <Button type="submit">Cadastrar</Button>
           </form>
           <Link className="login" to="/login">
@@ -48,6 +117,12 @@ export default function SignUp() {
           </Link>
         </div>
       </main>
+      {isModalErrorOpen &&
+        <Modal type="feedback" close={() => setIsModalErrorOpen(false)} title={errorMsg} buttonText='OK'/>
+      }
+      {isModalSuccessOpen &&
+        <Modal type="feedback" close={handleClickOkInSuccessModal} title='Seu cadastro foi realizado com sucesso! Faça login para entrar na plataforma.' buttonText='OK'/>
+      }
     </Wrapper>
   );
 };
