@@ -9,7 +9,7 @@ import { IconBaseProps } from 'react-icons';
 import { Container } from './styles';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  name: string;
+  name?: string;
   containerStyle?: object;
   icon?: React.ComponentType<IconBaseProps>;
 }
@@ -23,7 +23,6 @@ const Input: React.FC<InputProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
-
 
   const handleInputFocus = useCallback(() => {
     setIsFocused(true);

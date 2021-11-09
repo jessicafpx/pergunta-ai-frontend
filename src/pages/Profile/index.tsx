@@ -40,7 +40,9 @@ const Profile = () => {
 
   const findAvatar = () => {
     const findedAvatar = avatars.find((item) => item.avatarName === user.avatar);
-    return findedAvatar?.src;
+    if (findedAvatar) return findedAvatar?.src;
+
+    return avatars[0].src;
   };
 
   const handleLogOut = useCallback(async() => {

@@ -21,7 +21,7 @@ interface Props {
 
 const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonText }) => {
   const { user, updateUser, signOut } = useAuth();
-  const [selectedAvatar, setSelectedAvatar] = useState(user.avatar);
+  const [selectedAvatar, setSelectedAvatar] = useState(user?.avatar || 'AVATAR1');
   const [inputNewPassword, setInputNewPassword] = useState('');
   const [inputNewPasswordAgain, setInputNewPasswordAgain] = useState('');
 
@@ -57,7 +57,7 @@ const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonT
       alert('senhas não são iguais');
     }
 
-  }, [close, inputNewPassword, inputNewPasswordAgain, user.id]);
+  }, [close, inputNewPassword, inputNewPasswordAgain, user?.id]);
 
   const handleAccountDelete = useCallback(async() => {
     await api.delete(`/user/${user.id}`);
@@ -65,7 +65,7 @@ const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonT
     close();
     history.push('/');
 
-  }, [close, history, signOut, user.id]);
+  }, [close, history, signOut, user?.id]);
 
   const ModalContent = () => {
     switch (type) {
