@@ -20,7 +20,8 @@ import { Wrapper } from './styles';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isModalErrorOpen, setIsModalErrorOpen] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const { signIn } = useAuth();
   const history = useHistory();
@@ -28,14 +29,28 @@ export default function Login() {
   const handleSubmitForm = useCallback(async e =>{
     e.preventDefault();
 
+    if (!email.match('@pucgo.edu.br')) {
+      setErrorMsg('O e-mail precisa ser do domínio @pucgo.edu.br.');
+      setIsModalErrorOpen(true);
+      return;
+    }
+
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]/;
+
+    if (!password.match(regex)) {
+      setErrorMsg('Senha precisa ter: entre 8 e 15 caracteres, letra maiúscula, letra minúscula, número e caractere especial');
+      setIsModalErrorOpen(true);
+      return;
+    }
+
     try {
       await signIn({ email, password });
       history.push("/profile");
     } catch (err) {
-      setIsErrorModalOpen(true);
-      console.log(err)
+      setErrorMsg('E-mail ou senha inválidos. Por favor, revise e tente novamente.')
+      setIsModalErrorOpen(true);
     }
-  }, [email, password])
+  }, [email, history, password, signIn])
 
   return (
     <Wrapper>
@@ -63,8 +78,8 @@ export default function Login() {
         </div>
       </main>
 
-      {isErrorModalOpen &&
-        <Modal type="feedback" close={() => setIsErrorModalOpen(false)} title="E-mail ou senha inválidos. Por favor, revise e tente novamente." buttonText="OK"/>
+      {isModalErrorOpen &&
+        <Modal type="feedback" close={() => setIsModalErrorOpen(false)} title={errorMsg} buttonText="OK"/>
       }
     </Wrapper>
   );

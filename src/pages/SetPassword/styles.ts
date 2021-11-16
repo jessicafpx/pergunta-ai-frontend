@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { shade } from 'polished';
 
 export const Wrapper = styled.main`
   background-color: #012C50;
