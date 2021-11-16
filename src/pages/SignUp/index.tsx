@@ -46,25 +46,27 @@ export default function SignUp() {
     }
 
     if (inputPassword !== inputPasswordAgain) {
-      setErrorMsg('As senhas devem ser iguais!');
+      setErrorMsg('As senhas devem ser iguais.');
       setIsModalErrorOpen(true);
       return;
     }
 
-    if (inputPassword.length < 6) {
-      setErrorMsg('A senha deve ter pelo menos 6 caracteres!');
-      setIsModalErrorOpen(true);
-      return;
-    }
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]/;
 
-    if (inputName.length < 6) {
-      setErrorMsg('Nome deve ter pelo menos 6 caracteres');
+    if (!inputPassword.match(regex)) {
+      setErrorMsg('Senha precisa ter: entre 8 e 15 caracteres, letra maiúscula, letra minúscula, número e caractere especial');
       setIsModalErrorOpen(true);
       return;
     }
 
     if (!inputEmail.match('@pucgo.edu.br')) {
-      setErrorMsg('e-mail precisa ser do domínio @pucgo.edu.br');
+      setErrorMsg('O e-mail precisa ser do domínio @pucgo.edu.br.');
+      setIsModalErrorOpen(true);
+      return;
+    }
+
+    if (inputCourse.length < 3) {
+      setErrorMsg('O curso precisa ter pelo menos 3 caracteres.');
       setIsModalErrorOpen(true);
       return;
     }
@@ -81,6 +83,7 @@ export default function SignUp() {
       setIsModalSuccessOpen(true);
 
     } catch (err) {
+      setErrorMsg('Houve um problema no seu cadastro. Tente novamente.')
       setIsModalErrorOpen(true);
     }
 
