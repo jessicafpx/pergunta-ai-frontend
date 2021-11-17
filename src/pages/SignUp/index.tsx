@@ -51,10 +51,16 @@ export default function SignUp() {
       return;
     }
 
+    if (inputName.length < 6) {
+      setErrorMsg('O nome precisa ter pelo menos 6 caracteres.');
+      setIsModalErrorOpen(true);
+      return;
+    }
+
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]/;
 
     if (!inputPassword.match(regex)) {
-      setErrorMsg('Senha precisa ter: entre 8 e 15 caracteres, letra maiúscula, letra minúscula, número e caractere especial');
+      setErrorMsg('Senha precisa ter: entre 8 e 15 caracteres, letra maiúscula, letra minúscula, número e caractere especial.');
       setIsModalErrorOpen(true);
       return;
     }

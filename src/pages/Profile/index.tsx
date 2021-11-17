@@ -24,6 +24,9 @@ const Profile = () => {
   const [inputBirth, setInputBirth] = useState(user.birthDate);
   const [isDisabled, setIsDisabled] = useState(true);
 
+  const [isModalErrorOpen, setIsModalErrorOpen] = useState(false);
+  const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
+
   const history = useHistory();
 
   const handleAvatarModalOpen = () => {
@@ -56,14 +59,20 @@ const Profile = () => {
     const newUser = {...user, name: inputName, course: inputCourse, birthDate: inputBirth}
     updateUser(newUser);
 
-    await api.put(`/user/${user.id}`, {
-      name: newUser.name,
-      course: newUser.course,
-      avatarOptions: newUser.avatar,
-      birthDate: newUser.birthDate
-    });
+    try {
+      await api.put(`/user/${user.id}`, {
+        name: newUser.name,
+        course: newUser.course,
+        avatarOptions: newUser.avatar,
+        birthDate: newUser.birthDate
+      });
 
-    setIsDisabled(true);
+      setIsModalSuccessOpen(true);
+      setIsDisabled(true);
+    } catch (err) {
+      setIsModalErrorOpen(true);
+    }
+
   }, [inputBirth, inputCourse, inputName, updateUser, user]);
 
 
@@ -133,6 +142,12 @@ const Profile = () => {
 
       </Content>
 
+      {isModalErrorOpen &&
+        <Modal type="feedback" close={() => setIsModalErrorOpen(false)} title="Houve um erro ao alterar suas informações. Por favor, revise e tente novamente." buttonText='OK'/>
+      }
+      {isModalSuccessOpen &&
+        <Modal type="feedback" close={() => setIsModalSuccessOpen(false)} title='Suas informações foram alteradas com sucesso!' buttonText='OK'/>
+      }
 
       {isChangeAvatarModalOpen &&
         <Modal type="avatar" close={handleAvatarModalOpen} />
