@@ -44,17 +44,27 @@ const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonT
   const handlePasswordChange = useCallback(async(event) => {
     event.preventDefault();
 
-    if (inputNewPassword === inputNewPasswordAgain) {
-      if (inputNewPassword.length >= 6) {
-        await api.put(`/user/password/${user.id}`, {
-          password: inputNewPassword
-        });
-        close();
-      } else {
-        alert('senha precisa ter no mínimo 6 caracteres');
-      }
-    } else {
-      alert('senhas não são iguais');
+    if (inputNewPassword !== inputNewPasswordAgain) {
+      alert('As senhas devem ser iguais.');
+      return;
+    }
+
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]/;
+
+    if (!inputNewPassword.match(regex)) {
+      alert('Senha precisa ter: entre 8 e 15 caracteres, letra maiúscula, letra minúscula, número e caractere especial.');
+      return;
+    }
+
+    try {
+      await api.put(`/user/password/${user.id}`, {
+        password: inputNewPassword
+      });
+      alert('Senha alterada com sucesso!');
+      close();
+    } catch (err) {
+      alert('Houve um erro ao alterar sua senha. Tente novamente.');
+      close();
     }
 
   }, [close, inputNewPassword, inputNewPasswordAgain, user?.id]);
