@@ -19,9 +19,6 @@ export const Wrapper = styled.div`
     flex-grow: 0;
     padding: 120px 80px;
     background-color: #fff;
-
-    #illustration {
-    }
   }
 
   main {
