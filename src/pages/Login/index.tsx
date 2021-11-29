@@ -45,7 +45,7 @@ export default function Login() {
 
     try {
       await signIn({ email, password });
-      history.push("/profile");
+      history.push("/");
     } catch (err) {
       setErrorMsg('E-mail ou senha inválidos. Por favor, revise e tente novamente.')
       setIsModalErrorOpen(true);

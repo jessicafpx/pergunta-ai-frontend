@@ -1,15 +1,17 @@
 import React, {useCallback, useState} from 'react';
+import { useHistory } from 'react-router';
+
 import { FiTrash, FiX, FiXCircle } from 'react-icons/fi';
 
 import Button from '../Button';
 
 import avatars from '../../assets/avatars';
 
-import { Overlay, Paper, CloseButton, Form } from './styles';
 import { useAuth } from '../../contexts/auth';
-import api from '../../services/api';
-import { useHistory } from 'react-router';
 
+import api from '../../services/api';
+
+import { Overlay, Paper, CloseButton, Form } from './styles';
 interface Props {
   close: () => void;
   confirm?: () => void;

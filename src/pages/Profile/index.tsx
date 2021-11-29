@@ -3,14 +3,20 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { FiCamera, FiArrowLeft, FiEdit, FiTrash, FiChevronRight, FiLogOut } from 'react-icons/fi';
 
+// components
 import Modal from '../../components/Modal';
 import Button from '../../components/Button';
 
-import avatars from '../../assets/avatars';
+// context
+import { useAuth } from '../../contexts/auth';
+
+// api
+import api from '../../services/api';
+
+// utils
+import { findAvatar } from '../../utils/findAvatar';
 
 import { Header, Content, Title, Form, Input } from './styles';
-import { useAuth } from '../../contexts/auth';
-import api from '../../services/api';
 
 const Profile = () => {
   const { signOut, user, updateUser } = useAuth();
@@ -41,16 +47,9 @@ const Profile = () => {
     setIsPasswordChangeModalOpen(!isPasswordChangeModalOpen);
   };
 
-  const findAvatar = () => {
-    const findedAvatar = avatars.find((item) => item.avatarName === user.avatar);
-    if (findedAvatar) return findedAvatar?.src;
-
-    return avatars[0].src;
-  };
-
   const handleLogOut = useCallback(async() => {
     signOut();
-    history.push('/');
+    history.push('/login');
   }, [history, signOut]);
 
   const handleProfileUpdate = useCallback(async(event) => {
@@ -75,8 +74,6 @@ const Profile = () => {
 
   }, [inputBirth, inputCourse, inputName, updateUser, user]);
 
-
-
   return (
     <>
       <Header>
@@ -87,7 +84,7 @@ const Profile = () => {
       </Header>
       <Content>
         <figure>
-          <img src={findAvatar()} alt="avatar" />
+          <img src={findAvatar(user)} alt="avatar" />
           <button type="button" onClick={handleAvatarModalOpen} >
             <FiCamera color="#f8f8f8" size="24"/>
           </button>

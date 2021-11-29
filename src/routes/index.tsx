@@ -7,10 +7,11 @@ import Profile from '../pages/Profile';
 import SignUp from '../pages/SignUp';
 import ForgotPassWord from '../pages/ForgotPassword';
 import SetPassword from '../pages/SetPassword';
+import Dashboard from '../pages/Dashboard';
 
 const Routes = () => (
     <Switch>
-      <Route path="/" exact component={Login} />
+      <Route path="/" exact component={Dashboard} isPrivate />
       <Route path="/login" exact component={Login} />
       <Route path="/profile" component={Profile} isPrivate/>
       <Route path="/signup" component={SignUp} />
