@@ -50,7 +50,7 @@ const Profile = () => {
 
   const handleLogOut = useCallback(async() => {
     signOut();
-    history.push('/');
+    history.push('/login');
   }, [history, signOut]);
 
   const handleProfileUpdate = useCallback(async(event) => {
@@ -74,8 +74,6 @@ const Profile = () => {
     }
 
   }, [inputBirth, inputCourse, inputName, updateUser, user]);
-
-
 
   return (
     <>
