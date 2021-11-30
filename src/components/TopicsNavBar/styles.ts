@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  margin-top: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -16,7 +17,6 @@ export const Container = styled.div`
       list-style-type: none;
       li {
         padding: 5px 15px;
-        width: 19%;
         text-align: center;
         position: relative;
         &:hover{
@@ -43,5 +43,6 @@ export const Container = styled.div`
     margin: 0;
     width: 150px;
     height: 40px;
+    font-size: 14px;
   }
 `;
