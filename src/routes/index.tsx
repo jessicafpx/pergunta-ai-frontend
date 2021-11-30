@@ -8,6 +8,7 @@ import SignUp from '../pages/SignUp';
 import ForgotPassWord from '../pages/ForgotPassword';
 import SetPassword from '../pages/SetPassword';
 import Dashboard from '../pages/Dashboard';
+import CreateTopic from '../pages/CreateTopic';
 
 const Routes = () => (
     <Switch>
@@ -17,6 +18,7 @@ const Routes = () => (
       <Route path="/signup" component={SignUp} />
       <Route path="/forgot-password" component={ForgotPassWord} />
       <Route path="/set-password" component={SetPassword} />
+      <Route path="/topic/:origin" component={CreateTopic} isPrivate />
     </Switch>
 );
 
