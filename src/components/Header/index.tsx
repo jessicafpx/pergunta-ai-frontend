@@ -18,7 +18,7 @@ const Header: React.FC = () => {
 
   return (
     <Container>
-      <img src={logoWhiteImg} alt="logotipo Pergunta Aí" className="logo"/>
+      <img src={logoWhiteImg} alt="logotipo Pergunta Aí" className="logo" onClick={() => history.push('/')}/>
 
       <button className="avatar-area" onClick={() => history.push('/profile')}>
         <img src={findAvatar(user)} alt="avatar" className="avatar-img"/>
