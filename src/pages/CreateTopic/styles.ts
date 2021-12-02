@@ -32,6 +32,10 @@ export const Content = styled.div`
     &::placeholder {
       color: #737380;
     }
+
+    &:focus {
+      border: 1px #00BEBB solid;
+    }
   }
 
   textarea {
@@ -67,6 +71,7 @@ export const Content = styled.div`
     .submit-button {
       max-width: 340px;
       margin: 0;
+      margin-left: auto;
     }
   }
 `;

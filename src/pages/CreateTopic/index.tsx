@@ -1,35 +1,85 @@
-import { useCallback, useContext, useMemo, useState } from 'react';
-import { useParams } from 'react-router';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useHistory, useParams } from 'react-router';
 
 import { FiPlus } from 'react-icons/fi';
 
+// components
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import Modal from '../../components/Modal';
-
-import { DefaultContext } from '../../contexts/defaultContext';
-
-import { Wrapper, Content } from './styles';
 import Tag from '../../components/Tag';
 
+// context
+import { DefaultContext } from '../../contexts/defaultContext';
+
+// api
+import api from '../../services/api';
+
+
+import { Wrapper, Content } from './styles';
+
 const CreateTopic = () => {
-  const { origin } = useParams<any>();
+  const { origin, idTopic } = useParams<any>();
+  const history = useHistory();
 
   const [isModalTagsOpen, setIsModalTagsOpen] = useState(false);
   const [inputTitle, setInputTitle] = useState('');
   const [inputMsg, setInputMsg] = useState('');
+  const [modalMsg, setModalMsg] = useState('');
+  const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
+  const [isModalErrorOpen, setIsModalErrorOpen] = useState(false);
 
   const isDisabled = useMemo(() => {
-    return !inputTitle || !inputMsg;
+    return inputTitle.length<5 || inputMsg.length<10;
   }, [inputMsg, inputTitle])
 
-  const { selectedTags } = useContext(DefaultContext) as any;
+  const { selectedTags, setSelectedTags } = useContext(DefaultContext) as any;
 
-  const formSubmit = useCallback((event)=> {
+  useEffect(() => {
+    setSelectedTags([] as string[]);
+  }, []);
+
+
+  const handleClickOkInSuccessModal = () => {
+    setIsModalSuccessOpen(false);
+    history.push('/');
+  }
+
+  const formSubmit = useCallback(async(event)=> {
     event.preventDefault();
 
+    const newTopic = {
+      title: inputTitle,
+      message: inputMsg,
+      tags: selectedTags
+    }
 
-  }, [])
+    const editedTopic = {
+      title: inputTitle,
+      message: inputMsg,
+    }
+
+    if (origin === 'new') {
+      try {
+        await api.post('topics', newTopic);
+        setModalMsg('Pergunta enviada com sucesso!');
+        setIsModalSuccessOpen(true);
+      } catch (err) {
+        setModalMsg('Houve um problema ao enviar sua pergunta. Tente novamente.');
+        setIsModalErrorOpen(true);
+      }
+    } else if (origin === 'edit') {
+      try {
+        await api.put(`topics/${idTopic}`, editedTopic);
+        setModalMsg('Pergunta editada com sucesso!');
+        setIsModalSuccessOpen(true);
+      } catch (err) {
+        setModalMsg('Houve um problema ao editar sua pergunta. Tente novamente.');
+        setIsModalErrorOpen(true);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inputMsg, inputTitle, selectedTags])
 
   return (
     <>
@@ -53,10 +103,12 @@ const CreateTopic = () => {
               </div>
 
             <section className="buttons">
-              <button className="select-button" onClick={() => setIsModalTagsOpen(true)}>
-                <FiPlus color="#00BEBB" size="24" />
-                Selecionar categoria
-              </button>
+              {origin === 'new' && (
+                <button className="select-button" type="button" onClick={() => setIsModalTagsOpen(true)}>
+                  <FiPlus color="#00BEBB" size="24" />
+                  Selecionar categoria
+                </button>
+              )}
               <Button type="submit" isDisabled={isDisabled} className="submit-button" form="topicForm">
                 Salvar pergunta
               </Button>
@@ -66,6 +118,12 @@ const CreateTopic = () => {
       </Wrapper>
       {isModalTagsOpen &&
         <Modal type="tags" close={() => setIsModalTagsOpen(false)} buttonText='Confirmar categorias'/>
+      }
+      {isModalErrorOpen &&
+        <Modal type="feedback" close={() => setIsModalErrorOpen(false)} title={modalMsg} buttonText='OK'/>
+      }
+      {isModalSuccessOpen &&
+        <Modal type="feedback" close={handleClickOkInSuccessModal} title={modalMsg} buttonText='OK'/>
       }
     </>
   );
