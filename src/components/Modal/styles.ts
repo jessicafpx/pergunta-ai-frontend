@@ -71,6 +71,28 @@ export const Paper = styled.div`
     border: 3px #FDB643 solid;
     border-radius: 50%;
   }
+
+  .tags-checkbox {
+    display: flex;
+    gap: 36px;
+  }
+
+  .col1, .col2, .col3 {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      margin-bottom: 16px;
+      flex-wrap: nowrap;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    input {
+      margin-right: 10px;
+    }
+  }
 `;
 
 export const CloseButton = styled.button`

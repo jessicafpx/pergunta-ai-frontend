@@ -41,6 +41,12 @@ export const Content = styled.div`
     max-width: 800px;
   }
 
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
   .buttons {
     display: flex;
     justify-content: space-between;
@@ -55,6 +61,7 @@ export const Content = styled.div`
       display: flex;
       align-items: center;
       gap: 8px;
+      text-decoration: underline;
     }
 
     .submit-button {
