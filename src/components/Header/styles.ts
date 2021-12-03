@@ -18,6 +18,7 @@ export const Container = styled.div`
 
   .logo {
     width: 132px;
+    cursor: pointer;
   }
 
   .avatar-area {

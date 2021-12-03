@@ -32,6 +32,10 @@ export const Content = styled.div`
     &::placeholder {
       color: #737380;
     }
+
+    &:focus {
+      border: 1px #00BEBB solid;
+    }
   }
 
   textarea {
@@ -39,6 +43,12 @@ export const Content = styled.div`
     font-family: 'Poppins';
     min-height: 250px;
     max-width: 800px;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   .buttons {
@@ -55,11 +65,13 @@ export const Content = styled.div`
       display: flex;
       align-items: center;
       gap: 8px;
+      text-decoration: underline;
     }
 
     .submit-button {
       max-width: 340px;
       margin: 0;
+      margin-left: auto;
     }
   }
 `;

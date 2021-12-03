@@ -1,17 +1,19 @@
 import { useCallback, useState } from 'react';
+import { useHistory, useLocation } from 'react-router';
 import { FiLock } from 'react-icons/fi';
 
 // components
 import Button from '../../components/Button';
 import Input from '../../components/Input';
+import Modal from '../../components/Modal';
 
 // assets
 import logoWhiteImg from '../../assets/logo-white.svg';
 
-import { Wrapper, Content } from './styles';
-import { useHistory, useLocation } from 'react-router';
+// api
 import api from '../../services/api';
-import Modal from '../../components/Modal';
+
+import { Wrapper, Content } from './styles';
 
 const SetPassWord = () => {
   const [inputPassword, setInputPassword] = useState('');

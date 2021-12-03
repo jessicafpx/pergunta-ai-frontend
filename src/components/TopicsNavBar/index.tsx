@@ -1,12 +1,13 @@
-import React, {useCallback, useState} from 'react';
-import { FiSearch } from 'react-icons/fi';
+import React from 'react';
+import { useHistory } from 'react-router';
 
-import Input from '../Input'
 import Button from '../Button'
 
 import { Container } from './styles'
 
 const TopicsNavBar: React.FC = () => {
+  const history = useHistory();
+
   return (
     <Container>
       <nav>
@@ -19,7 +20,7 @@ const TopicsNavBar: React.FC = () => {
         </ul>
       </nav>
 
-      <Button>
+      <Button onClick={() => history.push('/topic/new')}>
         NOVO TÓPICO
       </Button>
     </Container>

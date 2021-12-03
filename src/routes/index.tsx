@@ -18,7 +18,7 @@ const Routes = () => (
       <Route path="/signup" component={SignUp} />
       <Route path="/forgot-password" component={ForgotPassWord} />
       <Route path="/set-password" component={SetPassword} />
-      <Route path="/topic/:origin" component={CreateTopic} isPrivate />
+      <Route path="/topic/:origin/:idTopic?" component={CreateTopic} isPrivate />
     </Switch>
 );
 
