@@ -29,15 +29,17 @@ const CreateTopic = () => {
   const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
   const [isModalErrorOpen, setIsModalErrorOpen] = useState(false);
 
-  const isDisabled = useMemo(() => {
-    return inputTitle.length<5 || inputMsg.length<10;
-  }, [inputMsg, inputTitle])
-
   const { selectedTags, setSelectedTags } = useContext(DefaultContext) as any;
 
   useEffect(() => {
     setSelectedTags([] as string[]);
   }, []);
+
+
+  const isDisabled = useMemo(() => {
+    if (origin === 'edit') return inputTitle.length<5 || inputMsg.length<10;
+    if (origin === 'new') return inputTitle.length<5 || inputMsg.length<10 || selectedTags.length<1 ;
+  }, [inputMsg.length, inputTitle.length, origin, selectedTags])
 
 
   const handleClickOkInSuccessModal = () => {
