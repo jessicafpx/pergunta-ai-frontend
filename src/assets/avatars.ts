@@ -10,6 +10,7 @@ import avatar9 from './avatar9.png';
 import avatar10 from './avatar10.png';
 import avatar11 from './avatar11.png';
 import avatar12 from './avatar12.png';
+import avatarDefault from './default.png';
 
 const avatars = [
   {src:avatar1, avatarName: 'AVATAR1'},
@@ -24,6 +25,7 @@ const avatars = [
   {src:avatar10, avatarName: 'AVATAR10'},
   {src:avatar11, avatarName: 'AVATAR11'},
   {src:avatar12, avatarName: 'AVATAR12'},
+  {src:avatarDefault, avatarName: 'DEFAULT'},
 ];
 
 export default avatars;
