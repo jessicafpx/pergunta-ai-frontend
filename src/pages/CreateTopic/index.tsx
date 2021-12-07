@@ -11,6 +11,7 @@ import Tag from '../../components/Tag';
 
 // context
 import { DefaultContext } from '../../contexts/defaultContext';
+import { useAuth } from '../../contexts/auth';
 
 // api
 import api from '../../services/api';
@@ -20,6 +21,7 @@ import { Wrapper, Content } from './styles';
 
 const CreateTopic = () => {
   const { origin, idTopic } = useParams<any>();
+  const { user } = useAuth();
   const history = useHistory();
 
   const [isModalTagsOpen, setIsModalTagsOpen] = useState(false);
@@ -33,6 +35,23 @@ const CreateTopic = () => {
 
   useEffect(() => {
     setSelectedTags([] as string[]);
+
+    const fetchTopicData = async () => {
+      try {
+        const {data: currentTopic} = await api.get(`topicss/${idTopic}`);
+
+        setInputTitle(currentTopic?.title || '');
+        setInputMsg(currentTopic?.message || '');
+      } catch (err) {
+        setModalMsg('Houve um problema ao editar sua pergunta. Tente novamente.');
+        setIsModalErrorOpen(true);
+        setTimeout(() => history.push('/'), 4000);
+      }
+    }
+
+    if (origin === 'edit' && idTopic) {
+      fetchTopicData();
+    }
   }, []);
 
 
@@ -53,12 +72,15 @@ const CreateTopic = () => {
     const newTopic = {
       title: inputTitle,
       message: inputMsg,
-      tags: selectedTags
+      tags: selectedTags,
+      authorId: user.id
     }
 
     const editedTopic = {
       title: inputTitle,
       message: inputMsg,
+      status: "NOT_ANSWERED",
+      authorId: user.id
     }
 
     if (origin === 'new') {
@@ -92,9 +114,8 @@ const CreateTopic = () => {
           {origin === 'new' && <h1>Nova pergunta</h1>}
 
           <form id="topicForm" onSubmit={formSubmit}>
-            <input type="text" placeholder="Digite o título da sua pergunta" onChange={(e) => setInputTitle(e.target.value)}/>
-            <textarea wrap="off" placeholder="O que você quer perguntar?" onChange={(e) => setInputMsg(e.target.value)}/>
-
+            <input type="text" placeholder="Digite o título da sua pergunta" onChange={(e) => setInputTitle(e.target.value)} value={inputTitle}/>
+            <textarea wrap="off" placeholder="O que você quer perguntar?" onChange={(e) => setInputMsg(e.target.value)} value={inputMsg}/>
 
               <div className="tags">
                 {selectedTags.map((tag: any) => {
