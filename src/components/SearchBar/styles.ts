@@ -20,20 +20,21 @@ export const SearchInput = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  background: #D8DDE9;
+  background: #ECEEF2;
   border-radius: 10px;
   padding: 0 15px;
   width: 500px;
   height: 100%;
-  border: 2px solid #D8DDE9;
+  border: 2px solid #ECEEF2;
   color: #012C50;
 
   input {
     flex: 1;
     background: transparent;
     border: 0;
+    color: #737380;
     &::placeholder {
-      color: #8B8DAB;
+      color: #737380;
     }
   }
 
@@ -48,12 +49,12 @@ export const DropMenu = styled.div`
   justify-content: space-between;
   cursor: pointer;
 
-  background: #D8DDE9;
-  border-radius: 10px;
+  background: #ECEEF2;
+  border-radius: 8px;
   padding: 0 25px;
   width: 270px;
   height: 100%;
-  border: 2px solid #D8DDE9;
+  border: 2px solid #ECEEF2;
   color: #012C50;
 
   position: relative;
@@ -65,17 +66,17 @@ export const DropMenu = styled.div`
     background: transparent;
     border: 0;
     &::placeholder {
-      color: #8B8DAB;
+      color: #737380;
     }
   }
 
   div {
     position: absolute;
-    top: 55px;
+    top: 45px;
     left: 0;
     padding: 15px 0;
-    background: #D8DDE9;
-    border-radius: 10px;
+    background: #ECEEF2;
+    border-radius: 8px;
     width: 270px;
     z-index: 10;
 
