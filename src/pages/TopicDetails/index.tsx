@@ -20,6 +20,8 @@ import api from '../../services/api';
 import avatars from '../../assets/avatars'
 
 import { Wrapper } from './styles';
+import { findAvatarByString } from '../../utils/findAvatar';
+import NoTopics from '../../components/NoTopics';
 
 type Topic = {
   id: number;
@@ -30,36 +32,8 @@ type Topic = {
   answers: any[];
   tags: string[];
   title?: string;
+  avatar: string;
 }
-const mockTopic: Topic = {
-  id: 21,
-  message: "Estou integrando a emissão de nota fiscal numa aplicação, e a API me retorna um link html pra impressão. O problema é que quando jogo pra imprimir pela biblioteca react-print, usando o dangerouslySetInnerHTML, a qualidade sai bem ruim na impressora térmica. ",
-  creationDate: "2021-12-06T22:06:54.392809",
-  authorName: "Jessica Peixoto",
-  status: "NOT_ANSWERED",
-  answers: [
-    {
-      id: 7,
-      message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nec massa nec orci posuere euismod. Phasellus lobortis ipsum laoreet augue ornare porttitor. Nulla facilisi. Duis cursus ...',
-      authorAvatar: 'AVATAR6',
-      authorName: 'Fulano da Silva Sauro',
-      answers: 3,
-    },
-    {
-      id: 5,
-      message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nec massa nec orci posuere euismod. Phasellus lobortis ipsum laoreet augue ornare porttitor. Nulla facilisi. Duis cursus ...',
-      authorAvatar: 'AVATAR3',
-      authorName: 'Ciclano de Azevedo',
-      answers: 5,
-    },
-  ],
-  tags: [
-    "Front-end",
-    "Engenharia de Software"
-  ],
-  title: "Teste título"
-}
-
 
 const TopicDetails = () => {
   const { idTopic } = useParams<any>();
@@ -67,21 +41,32 @@ const TopicDetails = () => {
   const history = useHistory();
 
   const [topic, setTopic] = useState({} as Topic);
+  const [isMyTopic, setIsMyTopic] = useState(false);
+  const [isMyAnswer, setIsMyAnswer] = useState(false);
 
   useEffect(() => {
     const fetchTopicData = async () => {
-      setTopic(mockTopic);
-      // try {
-      //   const {data: currentTopic} = await api.get(`topicss/${idTopic}`);
+      try {
+        const {data: currentTopic} = await api.get(`topics/${idTopic}`);
+        setTopic(currentTopic)
+        console.log(currentTopic);
 
-      // } catch (err) {
-      // }
+
+
+
+
+      } catch (err) {
+      }
     }
 
     if (idTopic) {
       fetchTopicData();
     }
   }, []);
+
+  useEffect(() => {
+    if (topic.authorName === user.name) setIsMyTopic(true);
+  }, [topic.authorName, user.name]);
 
   const handleClickOkInSuccessModal = () => {
     // setIsModalSuccessOpen(false);
@@ -96,7 +81,7 @@ const TopicDetails = () => {
         <div className="topic-box">
           <h3>{topic.title}</h3>
           <div className="tags">
-            {topic.tags.map((tag: any) => {
+            {topic.tags?.map((tag: any) => {
               return (
                 <Tag title={tag} />
               )
@@ -105,14 +90,16 @@ const TopicDetails = () => {
           <p>{topic.message}</p>
           <div className="topic-footer">
             <div className='user-container'>
-              <img src={avatars[12].src} alt="avatar" className="avatar-img"/>
+              <img src={findAvatarByString(topic.avatar)} alt="avatar" className="avatar-img"/>
               <p>{topic.authorName || 'Usuário desativado'}</p>
             </div>
-            <div className='buttons-box'>
-              <FiCheckSquare size={24} color='#737380' />
-              <FiEdit size={24} color='#737380' />
-              <FiTrash size={24} color='#737380' />
-            </div>
+            {isMyTopic && (
+              <div className='buttons-box'>
+                <FiCheckSquare size={24} color='#737380' />
+                <FiEdit size={24} color='#737380' onClick={() => history.push(`/topic/edit/${idTopic}`)}/>
+                <FiTrash size={24} color='#737380' />
+              </div>
+            )}
           </div>
         </div>
         <div className="answer-box">
@@ -123,7 +110,7 @@ const TopicDetails = () => {
         </div>
         <div className="answer-wrapper">
           <h4>Respostas</h4>
-          {topic.answers.map((answer) => {
+          {topic.answers?.length>0 ? topic.answers.map((answer) => {
             return (
               <div className='answer-item'>
                 <p>{answer.message}</p>
@@ -139,7 +126,11 @@ const TopicDetails = () => {
                 </div>
               </div>
             )
-          })}
+          }) : (
+            <div className="no-topics">
+              <NoTopics isAnswer/>
+            </div>)
+          }
         </div>
 
       </Wrapper>

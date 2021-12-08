@@ -31,6 +31,8 @@ const CreateTopic = () => {
   const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
   const [isModalErrorOpen, setIsModalErrorOpen] = useState(false);
 
+  const [responseIdTopic, setResponseIdTopic] = useState('');
+
   const { selectedTags, setSelectedTags } = useContext(DefaultContext) as any;
 
   useEffect(() => {
@@ -38,7 +40,7 @@ const CreateTopic = () => {
 
     const fetchTopicData = async () => {
       try {
-        const {data: currentTopic} = await api.get(`topicss/${idTopic}`);
+        const {data: currentTopic} = await api.get(`topics/${idTopic}`);
 
         setInputTitle(currentTopic?.title || '');
         setInputMsg(currentTopic?.message || '');
@@ -63,7 +65,7 @@ const CreateTopic = () => {
 
   const handleClickOkInSuccessModal = () => {
     setIsModalSuccessOpen(false);
-    history.push('/');
+    history.push(`/topic-details/${responseIdTopic}`);
   }
 
   const formSubmit = useCallback(async(event)=> {
@@ -85,7 +87,8 @@ const CreateTopic = () => {
 
     if (origin === 'new') {
       try {
-        await api.post('topics', newTopic);
+        const res = await api.post('topics', newTopic);
+        setResponseIdTopic(res.data.id);
         setModalMsg('Pergunta enviada com sucesso!');
         setIsModalSuccessOpen(true);
       } catch (err) {
@@ -94,7 +97,8 @@ const CreateTopic = () => {
       }
     } else if (origin === 'edit') {
       try {
-        await api.put(`topics/${idTopic}`, editedTopic);
+        const res = await api.put(`topics/${idTopic}`, editedTopic);
+        setResponseIdTopic(res.data.id);
         setModalMsg('Pergunta editada com sucesso!');
         setIsModalSuccessOpen(true);
       } catch (err) {

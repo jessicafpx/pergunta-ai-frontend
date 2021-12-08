@@ -8,3 +8,11 @@ export const findAvatar = (user: User) => {
 
   return avatars[0].src;
 };
+
+export const findAvatarByString = (avatar: string) => {
+  const findedAvatar = avatars.find((item) => item.avatarName === avatar);
+  if (findedAvatar) return findedAvatar?.src;
+
+  return avatars[0].src;
+};
+

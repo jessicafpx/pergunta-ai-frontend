@@ -41,6 +41,7 @@ export const Wrapper = styled.div`
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-top: 20px;
     }
   }
 
@@ -106,6 +107,12 @@ export const Wrapper = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
+
+    .no-topics {
+      section {
+        margin-top: 0;
+      }
+    }
 
     h4 {
       font-size: 22px;
