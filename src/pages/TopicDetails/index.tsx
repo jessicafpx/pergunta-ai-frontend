@@ -27,6 +27,7 @@ type Topic = {
   id: number;
   message: string;
   creationDate: string;
+  authorId: number;
   authorName: string;
   status: string;
   answers: any[];
@@ -65,8 +66,8 @@ const TopicDetails = () => {
   }, []);
 
   useEffect(() => {
-    if (topic.authorName === user.name) setIsMyTopic(true);
-  }, [topic.authorName, user.name]);
+    if (topic.authorId === user.id) setIsMyTopic(true);
+  }, [topic.authorId, user.id]);
 
   const handleClickOkInSuccessModal = () => {
     // setIsModalSuccessOpen(false);
