@@ -16,6 +16,7 @@ const Dashboard = () => {
   const getTopics = useCallback(async () => {
     try {
       const { data: {content: topicsList }} = await api.get('topics');
+      console.log(topicsList)
       setAllTopic(topicsList);
       setFiltredTopics(topicsList);
     } catch (err) {

@@ -1,10 +1,22 @@
-export interface ITopic {
+export type ITopic = {
   id: number;
-  title: string;
-  message?: string;
+  answers: IAnswer[];
+  authorId: number;
+  authorName: string;
   avatar: string;
-  name: string;
+  title: string;
+  message: string;
+  status: 'NOT_ANSWERED' | 'CLOSED';
   tags: string[];
   totalOfAnswers: number;
-  status: "NOT_ANSWERED" | "CLOSED";
+  name: string;
+}
+
+export interface IAnswer {
+  answerLikes: number;
+  authorAvatar: string;
+  authorName: string;
+  authorId: number;
+  id: number;
+  message: string;
 }

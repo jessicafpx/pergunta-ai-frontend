@@ -8,6 +8,8 @@ import avatars from '../../assets/avatars'
 import { Container } from './styles'
 import { useHistory } from 'react-router';
 
+import Tag from '../Tag';
+
 interface Props {
   topic:ITopic
 };
@@ -36,6 +38,13 @@ const Topic: React.FC<Props> = ({ topic }) => {
           <p>{topic.totalOfAnswers}</p>
           <FiMessageSquare/>
         </div>
+      </div>
+      <div className="tags">
+        {topic.tags?.map((tag: any) => {
+          return (
+            <Tag title={tag} />
+          )
+        })}
       </div>
     </Container>
   )
