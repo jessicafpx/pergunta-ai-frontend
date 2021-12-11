@@ -6,6 +6,7 @@ export const Container = styled.div`
   border-radius: 10px;
   padding: 24px;
   margin-top: 10px;
+  cursor: pointer;
 
   &:hover {
     border:1px solid #00BEBB;
@@ -45,6 +46,12 @@ export const Container = styled.div`
 
   .interaction-container {
     color: #737380;
+  }
+
+  .tags {
+    margin-top: 16px;
+    gap: 8px;
+    justify-content: flex-start;
   }
 
 `;

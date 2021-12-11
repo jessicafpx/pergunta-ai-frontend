@@ -16,14 +16,15 @@ import { Overlay, Paper, CloseButton, Form } from './styles';
 
 interface Props {
   close: () => void;
+  closeTopic?: () => void;
   confirm?: () => void;
   title?: string;
   subtitle?: string;
   buttonText?: string;
-  type: 'avatar' | 'accountDelete' | 'questionOrAnswerDelete' |  'feedback' | 'passwordChange' | 'tags';
+  type: 'avatar' | 'accountDelete' | 'questionOrAnswerDelete' |  'feedback' | 'passwordChange' | 'tags' | 'close-topic';
 };
 
-const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonText }) => {
+const Modal: React.FC<Props> = ({ type, close, confirm, closeTopic, title, subtitle, buttonText }) => {
   const { user, updateUser, signOut } = useAuth();
   const [selectedAvatar, setSelectedAvatar] = useState(user?.avatar || 'AVATAR1');
   const [inputNewPassword, setInputNewPassword] = useState('');
@@ -138,6 +139,13 @@ const Modal: React.FC<Props> = ({ type, close, confirm, title, subtitle, buttonT
           <>
             <h4>{title}</h4>
             <Button type="submit" onClick={close}>{buttonText}</Button>
+          </>
+        )
+      case 'close-topic':
+        return (
+          <>
+            <h4>{title}</h4>
+            <Button type="submit" onClick={closeTopic}>{buttonText}</Button>
           </>
         )
       case 'tags':

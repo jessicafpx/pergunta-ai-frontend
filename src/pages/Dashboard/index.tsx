@@ -7,61 +7,52 @@ import Topic from "../../components/Topic";
 import {Container} from './styles'
 import { ITopic } from "../../models/topic";
 import { useCallback, useEffect, useState } from "react";
-
-const mockTopics: ITopic[] =[
-  {
-    id: 7,
-    title: 'Como emitir nota fiscal em Cobol?',
-    authorAvatar: 'AVATAR6',
-    authorName: 'Fulano da Silva Sauro',
-    answers: 3,
-  },
-  {
-    id: 5,
-    title: 'Como varrer uma lista em JS?',
-    authorAvatar: 'AVATAR3',
-    authorName: 'Ciclano de Azevedo',
-    answers: 5,
-  },
-  {
-    id: 8,
-    title: 'Como subir um tomcat?',
-    authorAvatar: '',
-    authorName: '',
-    answers: 16,
-  },
-  {
-    id: 9,
-    title: 'Qual a vantagem do servless?',
-    authorAvatar: 'AVATAR9',
-    authorName: 'Ota Pessoa',
-    answers: 4,
-  }
-]
-
+import api from "../../services/api";
 
 const Dashboard = () => {
-  const [topics, setTopics] = useState([] as ITopic[])
+  const [allTopics, setAllTopic] = useState([] as ITopic[])
+  const [filtredTopics, setFiltredTopics] = useState([] as ITopic[])
 
-  const getTopics = useCallback(() => {
-    // TODO: PEGAR DA API
-    setTopics(mockTopics);
-  },[]);
+  const getTopics = useCallback(async () => {
+    try {
+      const { data: {content: topicsList }} = await api.get('topics');
+      console.log(topicsList)
+      setAllTopic(topicsList);
+      setFiltredTopics(topicsList);
+    } catch (err) {
+      console.log(err)
+    }
+  },[setAllTopic, setFiltredTopics]);
 
   useEffect(()=>{
     getTopics();
   },[])
 
+  const searchTopicsCallback = useCallback (( event: React.ChangeEvent<HTMLInputElement> ) => {
+    const searchValue = event.target.value;
+    if (!searchValue) return setFiltredTopics(allTopics);
+
+    const filtredResult = allTopics.filter((topic: ITopic) => topic.title.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()));
+    setFiltredTopics(filtredResult);
+  }, [allTopics]);
+
+  const filterTopicsCallback = useCallback ((value: string) => {
+    if (value == 'Todos') return setFiltredTopics(allTopics);
+
+    const filtredResult = allTopics.filter((topic: ITopic) => topic.tags.includes(value));
+    setFiltredTopics(filtredResult);
+  }, [allTopics, filtredTopics]);
+
   return (
     <>
       <Header />
       <Container>
-        <SearchBar />
+        <SearchBar searchTopics={searchTopicsCallback} filterTopics={filterTopicsCallback}/>
         <TopicsNavBar />
-        {topics.map(topic =>
-          <Topic topic={topic} />)
+        {filtredTopics.map(topic =>
+          <Topic key={topic.id} topic={topic} />)
         }
-        {topics.length === 0 && <NoTopics />}
+        {filtredTopics.length === 0 && <NoTopics />}
       </Container>
     </>
   );

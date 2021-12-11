@@ -6,18 +6,23 @@ import { ITopic } from '../../models/topic'
 import avatars from '../../assets/avatars'
 
 import { Container } from './styles'
+import { useHistory } from 'react-router';
+
+import Tag from '../Tag';
 
 interface Props {
   topic:ITopic
 };
 
 const Topic: React.FC<Props> = ({ topic }) => {
+  const history = useHistory();
+
   const handleTopicClick = useCallback(()=>{
-    console.log('clicou no topico', topic.id);
+    history.push(`/topic-details/${ topic.id}`);
   },[]);
 
   const topicAvatar = useMemo(()=>{
-    const foundedAvatar = avatars.find(avatar => avatar.avatarName === topic.authorAvatar);
+    const foundedAvatar = avatars.find(avatar => avatar.avatarName === topic.avatar);
     return foundedAvatar;
   },[topic])
 
@@ -27,12 +32,19 @@ const Topic: React.FC<Props> = ({ topic }) => {
       <div>
         <div className='user-container'>
           <img src={topicAvatar?.src || avatars[12].src} alt="avatar" className="avatar-img"/>
-          <p>{topic.authorName || 'Usuário desativado'}</p>
+          <p>{topic.name || 'Usuário desativado'}</p>
         </div>
         <div className='interaction-container'>
-          <p>{topic.answers}</p>
+          <p>{topic.totalOfAnswers}</p>
           <FiMessageSquare/>
         </div>
+      </div>
+      <div className="tags">
+        {topic.tags?.map((tag: any) => {
+          return (
+            <Tag title={tag} />
+          )
+        })}
       </div>
     </Container>
   )
