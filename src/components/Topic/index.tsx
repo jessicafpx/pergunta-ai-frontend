@@ -27,7 +27,7 @@ const Topic: React.FC<Props> = ({ topic }) => {
   },[topic])
 
   return (
-    <Container onClick={handleTopicClick}>
+    <Container onClick={handleTopicClick} className={topic.status==='CLOSED' ? 'closed' : ''}>
       <p>{topic.title}</p>
       <div>
         <div className='user-container'>
@@ -42,7 +42,7 @@ const Topic: React.FC<Props> = ({ topic }) => {
       <div className="tags">
         {topic.tags?.map((tag: any) => {
           return (
-            <Tag title={tag} />
+            <Tag key={tag} title={tag} />
           )
         })}
       </div>
