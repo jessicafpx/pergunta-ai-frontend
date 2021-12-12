@@ -10,13 +10,12 @@ import { useCallback, useEffect, useState } from "react";
 import api from "../../services/api";
 
 const Dashboard = () => {
-  const [allTopics, setAllTopic] = useState([] as ITopic[])
-  const [filtredTopics, setFiltredTopics] = useState([] as ITopic[])
+  const [allTopics, setAllTopic] = useState([] as ITopic[]);
+  const [filtredTopics, setFiltredTopics] = useState([] as ITopic[]);
 
   const getTopics = useCallback(async () => {
     try {
       const { data: {content: topicsList }} = await api.get('topics');
-      console.log(topicsList)
       setAllTopic(topicsList);
       setFiltredTopics(topicsList);
     } catch (err) {
@@ -43,12 +42,36 @@ const Dashboard = () => {
     setFiltredTopics(filtredResult);
   }, [allTopics, filtredTopics]);
 
+  const navSelectCallback = useCallback ((value: string) => {
+    console.log(value)
+    switch(value){
+      case 'Todos':
+        setFiltredTopics(allTopics);
+      break;
+      case 'Respondidos': {
+        const filtredResult = allTopics.filter((topic: ITopic) => topic.totalOfAnswers>0);
+        setFiltredTopics(filtredResult);
+        break;
+      }
+      case 'Abertos': {
+        const filtredResult = allTopics.filter((topic: ITopic) => topic.status!=='CLOSED');
+        setFiltredTopics(filtredResult);
+        break;
+      }
+      case 'Fechados': {
+        const filtredResult = allTopics.filter((topic: ITopic) => topic.status==='CLOSED');
+        setFiltredTopics(filtredResult);
+        break;
+      }
+    };
+  }, [allTopics, filtredTopics]);
+
   return (
     <>
       <Header />
       <Container>
         <SearchBar searchTopics={searchTopicsCallback} filterTopics={filterTopicsCallback}/>
-        <TopicsNavBar />
+        <TopicsNavBar filterTopics={navSelectCallback}/>
         {filtredTopics.map(topic =>
           <Topic key={topic.id} topic={topic} />)
         }
