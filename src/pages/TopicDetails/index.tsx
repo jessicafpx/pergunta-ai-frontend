@@ -70,9 +70,9 @@ const TopicDetails = () => {
     }
 
     try{
-      const response = await api.post('answer', answerPayload);
+      await api.post('answer', answerPayload);
       fetchTopicData();
-      console.log(response);
+      setAnswerMessage('');
     } catch (err) {
       setModalMessage('Erro ao enviar a resposta. Tente novamente mais tarde.')
       setIsModalErrorOpen(true);
