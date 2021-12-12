@@ -17,14 +17,34 @@ import { Overlay, Paper, CloseButton, Form } from './styles';
 interface Props {
   close: () => void;
   closeTopic?: () => void;
+  deleteAnswer?: () => Promise<void>;
+  deleteTopic?: () => void;
+  fetchTopicData?: () => Promise<void>;
   confirm?: () => void;
   title?: string;
   subtitle?: string;
   buttonText?: string;
-  type: 'avatar' | 'accountDelete' | 'questionOrAnswerDelete' |  'feedback' | 'passwordChange' | 'tags' | 'close-topic';
+  type: 'avatar' | 'accountDelete' | 'topicDelete' | 'answerDelete' | 'feedback' | 'passwordChange' | 'tags' | 'close-topic';
+  idTopic?: number;
+  idAnswer?: number;
 };
 
-const Modal: React.FC<Props> = ({ type, close, confirm, closeTopic, title, subtitle, buttonText }) => {
+const Modal: React.FC<Props> = (
+    {
+      type,
+      close,
+      confirm,
+      closeTopic,
+      deleteAnswer,
+      deleteTopic,
+      fetchTopicData,
+      title,
+      subtitle,
+      buttonText,
+      idAnswer,
+      idTopic
+    }
+  ) => {
   const { user, updateUser, signOut } = useAuth();
   const [selectedAvatar, setSelectedAvatar] = useState(user?.avatar || 'AVATAR1');
   const [inputNewPassword, setInputNewPassword] = useState('');
@@ -96,6 +116,29 @@ const Modal: React.FC<Props> = ({ type, close, confirm, closeTopic, title, subti
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const handleAnswerDelete =  async() => {
+    try{
+      await api.delete(`/answer/${idAnswer}`);
+
+      if(fetchTopicData) fetchTopicData();
+
+      close();
+    } catch(err) {
+      console.error(err);
+    }
+  };
+
+  const handleTopicDelete =  async() => {
+    try{
+      await api.delete(`/topics/${idTopic}`);
+      close();
+      alert("Seu tópico foi excluído.");
+      history.push('/');
+    } catch(err) {
+      console.error(err);
+    }
+  };
+
   const ModalContent = () => {
     switch (type) {
       case 'avatar':
@@ -125,13 +168,22 @@ const Modal: React.FC<Props> = ({ type, close, confirm, closeTopic, title, subti
             <Button type="submit" onClick={handleAccountDelete}>Encerrar conta</Button>
           </>
         )
-      case 'questionOrAnswerDelete':
+      case 'topicDelete':
         return (
           <>
             <FiTrash color="#012C50" size="48" />
-            <h2>{title}</h2>
-            <h5>{subtitle}</h5>
-            <Button type="submit" onClick={handleAccountDelete}>{buttonText}</Button>
+            <h2>Excuir Tópico</h2>
+            <h5>Tem certeza que deseja excluir este tópico?</h5>
+            <Button type="button" onClick={handleTopicDelete}>Excluir Tópico</Button>
+          </>
+        )
+      case 'answerDelete':
+        return (
+          <>
+            <FiTrash color="#012C50" size="48" />
+            <h2>Excuir Resposta</h2>
+            <h5>Tem certeza que deseja excluir esta resposta?</h5>
+            <Button type="button" onClick={handleAnswerDelete}>Excluir Resposta</Button>
           </>
         )
       case 'feedback':

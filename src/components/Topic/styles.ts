@@ -54,4 +54,8 @@ export const Container = styled.div`
     justify-content: flex-start;
   }
 
+  &.closed {
+    background-color: #ECEEF2;
+  }
+
 `;
