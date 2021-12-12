@@ -45,7 +45,6 @@ const TopicDetails = () => {
     try {
       const {data: currentTopic} = await api.get(`topics/${idTopic}`);
       setTopic(currentTopic);
-      console.log(currentTopic);
     } catch (err) {
       console.error(err);
     }

@@ -43,7 +43,6 @@ const Dashboard = () => {
   }, [allTopics, filtredTopics]);
 
   const navSelectCallback = useCallback ((value: string) => {
-    console.log(value)
     switch(value){
       case 'Todos':
         setFiltredTopics(allTopics);
