@@ -132,7 +132,6 @@ const Modal: React.FC<Props> = (
     try{
       await api.delete(`/topics/${idTopic}`);
       close();
-      alert("Seu tópico foi excluído.");
       history.push('/');
     } catch(err) {
       console.error(err);
@@ -173,7 +172,7 @@ const Modal: React.FC<Props> = (
           <>
             <FiTrash color="#012C50" size="48" />
             <h2>Excuir Tópico</h2>
-            <h5>Tem certeza que deseja excluir este tópico?</h5>
+            <h5>Tem certeza que deseja excluir este tópico? Essa ação não poderá ser desfeita.</h5>
             <Button type="button" onClick={handleTopicDelete}>Excluir Tópico</Button>
           </>
         )
@@ -182,7 +181,7 @@ const Modal: React.FC<Props> = (
           <>
             <FiTrash color="#012C50" size="48" />
             <h2>Excuir Resposta</h2>
-            <h5>Tem certeza que deseja excluir esta resposta?</h5>
+            <h5>Tem certeza que deseja excluir esta resposta? Essa ação não poderá ser desfeita.</h5>
             <Button type="button" onClick={handleAnswerDelete}>Excluir Resposta</Button>
           </>
         )
