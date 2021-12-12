@@ -54,6 +54,7 @@ export const Paper = styled.div`
     font-size: 16px;
     font-weight: 400;
     margin: 12px 0 32px;
+    text-align: center;
   }
 
   .avatars {

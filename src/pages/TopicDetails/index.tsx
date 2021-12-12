@@ -30,12 +30,16 @@ const TopicDetails = () => {
 
   const [topic, setTopic] = useState({} as ITopic);
   const [isMyTopic, setIsMyTopic] = useState(false);
+  const [answerId, setAnswerId] = useState(0);
+  const [answerMessage, setAnswerMessage] = useState('');
+
+  // MODAL STATES
   const [modalMessage, setModalMessage] = useState('');
   const [isModalErrorOpen, setIsModalErrorOpen] = useState(false);
   const [isModalSuccessOpen, setIsModalSuccessOpen] = useState(false);
   const [isModalConfirmation, setIsModalConfirmation] = useState(false);
-
-  const [answerMessage, setAnswerMessage] = useState('');
+  const [isModalAnswerDeleteOpen, setIsModalAnswerDeleteOpen] = useState(false);
+  const [isModalTopicDeleteOpen, setIsModalTopicDeleteOpen] = useState(false);
 
   const fetchTopicData = useCallback(async () => {
     try {
@@ -57,9 +61,6 @@ const TopicDetails = () => {
     if (topic.authorId === user.id) setIsMyTopic(true);
   }, [topic.authorId, user.id]);
 
-  const handleClickOkInSuccessModal = () => {
-    // setIsModalSuccessOpen(false);
-  }
 
   const handleAnswerSubmit = useCallback( async (event)=>{
     event.preventDefault();
@@ -110,10 +111,6 @@ const TopicDetails = () => {
     }
   };
 
-  const handleDeleteAnswer = (id: number) => {
-    console.log(id);
-  }
-
   return (
     <>
       <Header />
@@ -137,7 +134,7 @@ const TopicDetails = () => {
               <div className='buttons-box'>
                 <FiCheckSquare size={24} color={topic.status === 'CLOSED' ? '#00BEBB' : '#737380'} onClick={closeTopicDispatch}/>
                 <FiEdit size={24} color='#737380' onClick={() => history.push(`/topic/edit/${idTopic}`)}/>
-                <FiTrash size={24} color='#737380' />
+                <FiTrash size={24} color='#737380' onClick={()=> setIsModalTopicDeleteOpen(true)}/>
               </div>
             )}
           </div>
@@ -163,7 +160,11 @@ const TopicDetails = () => {
                   </div>
                   {answer.authorId === user.id &&
                     <div className='buttons-box'>
-                      <FiTrash size={24} color='#737380' onClick={() => handleDeleteAnswer(answer.id)}/>
+                      <FiTrash size={24} color='#737380'
+                        onClick={() => {
+                          setAnswerId(answer.id);
+                          setIsModalAnswerDeleteOpen(true);
+                        }}/>
                     </div>
                   }
                 </div>
@@ -186,6 +187,12 @@ const TopicDetails = () => {
       }
       {isModalConfirmation &&
         <Modal type="close-topic" closeTopic={handleCloseTopic} close={() => setIsModalConfirmation(false)} title={modalMessage} buttonText='OK'/>
+      }
+      {isModalAnswerDeleteOpen &&
+        <Modal type="answerDelete" fetchTopicData={fetchTopicData} idAnswer={answerId} close={() => setIsModalAnswerDeleteOpen(false)} />
+      }
+      {isModalTopicDeleteOpen &&
+        <Modal type="topicDelete" idTopic={idTopic} close={() => setIsModalTopicDeleteOpen(false)} />
       }
     </>
   );
