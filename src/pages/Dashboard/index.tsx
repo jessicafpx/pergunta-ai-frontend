@@ -1,7 +1,6 @@
 import Header from "../../components/Header";
 import NoTopics from "../../components/NoTopics";
 import SearchBar from "../../components/SearchBar";
-import TopicsNavBar from "../../components/TopicsNavBar";
 import Topic from "../../components/Topic";
 
 import {Container} from './styles'
@@ -27,16 +26,18 @@ const Dashboard = () => {
     getTopics();
   },[])
 
-  const searchTopicsCallback = useCallback (( event: React.ChangeEvent<HTMLInputElement> ) => {
-    const searchValue = event.target.value;
-    if (!searchValue) return setFiltredTopics(allTopics);
+  const searchTopicsCallback = useCallback (( searchValue, selectedTag ) => {
+    let filtredResult = allTopics;
 
-    const filtredResult = allTopics.filter((topic: ITopic) => topic.title.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()));
+    if (selectedTag !== 'Todas categorias') filtredResult = filtredResult.filter((topic: ITopic) => topic.tags.includes(selectedTag));
+
+    if (searchValue) filtredResult = filtredResult.filter((topic: ITopic) => topic.title.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()));
+
     setFiltredTopics(filtredResult);
   }, [allTopics]);
 
   const filterTopicsCallback = useCallback ((value: string) => {
-    if (value == 'Todos') return setFiltredTopics(allTopics);
+    if (value === 'Todas categorias') return setFiltredTopics(allTopics);
 
     const filtredResult = allTopics.filter((topic: ITopic) => topic.tags.includes(value));
     setFiltredTopics(filtredResult);
@@ -69,8 +70,7 @@ const Dashboard = () => {
     <>
       <Header />
       <Container>
-        <SearchBar searchTopics={searchTopicsCallback} filterTopics={filterTopicsCallback}/>
-        <TopicsNavBar filterTopics={navSelectCallback}/>
+        <SearchBar searchTopics={searchTopicsCallback} filterTopicsByTag={filterTopicsCallback} filterTopicsByNavOption={navSelectCallback}/>
         {filtredTopics.map(topic =>
           <Topic key={topic.id} topic={topic} />)
         }
